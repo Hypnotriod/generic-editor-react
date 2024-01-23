@@ -14,8 +14,10 @@ const FILE_DESCRIPTION = {
 };
 
 const FILE_NAMES = {
-    MAIN: "mainData.json",
-    RESOURCES: "assesMapAsBase64.json"
+    MAIN: "main-scene.json",
+    RESOURCES: "main-assets-base64.json",
+    MAIN_SUFFIX: "-scene.json",
+    RESOURCES_SUFFIX: "-assets-base64.json",
 };
 
 /**
@@ -32,9 +34,10 @@ const collectUsedResources = (data, resourcesList) => {
 /**
  * To save resources which are used and export them in the map in base 64 format
  * @param {import("../../../store").Store} store 
+ * @param {string} fileName
  * @param {() => void} onFinish 
  */
-const exportResourcesAsBase64 = (store, onFinish) => {
+const exportResourcesAsBase64 = (store, fileName, onFinish) => {
     const { resourcesList, spritePropertiesList, nineSliceSpritePropertiesList } = store.getState();
 
     const resourcesToExport = collectUsedResources({ ...spritePropertiesList, ...nineSliceSpritePropertiesList }, resourcesList);
@@ -52,7 +55,7 @@ const exportResourcesAsBase64 = (store, onFinish) => {
                 },
                 resources
             }, null, 2),
-            FILE_NAMES.RESOURCES
+            fileName ? fileName + FILE_NAMES.RESOURCES_SUFFIX : FILE_NAMES.RESOURCES
         );
         onFinish();
     };
@@ -63,9 +66,10 @@ const exportResourcesAsBase64 = (store, onFinish) => {
 /**
  * To make a bundle with all the data and save it as json file
  * @param {import("../../../store").Store } store 
+ * @param {string} fileName 
  * @param {() => void} onFinish
  */
-const exportMainData = (store, onFinish) => {
+const exportMainData = (store, fileName, onFinish) => {
     const {
         tree,
         entityTypesList,
@@ -91,20 +95,21 @@ const exportMainData = (store, onFinish) => {
             graphicsList,
             textPropertiesList
         }, null, 2),
-        FILE_NAMES.MAIN
+        fileName ? fileName + FILE_NAMES.MAIN_SUFFIX : FILE_NAMES.MAIN
     );
 
     onFinish();
 };
 
 /**
- * @param {import("../../../store").Store} store 
+ * @param {import("../../../store").Store} store
+ * @param {string} fileName  
  * @param {() => void} [onFinish]
  */
-export const exportData = (store, onFinish = () => { }) => {
+export const exportData = (store, fileName, onFinish = () => { }) => {
 
     const callback = after(2, onFinish)
 
-    exportMainData(store, callback);
-    exportResourcesAsBase64(store, callback);
+    exportMainData(store, fileName, callback);
+    exportResourcesAsBase64(store, fileName, callback);
 }

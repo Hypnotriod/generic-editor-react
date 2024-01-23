@@ -22,8 +22,8 @@
     "deploy": "gh-pages -d build",
     "fixPathForGHPages": "node ./fixPathForGHPages.js",
     "createVersionFile": "node ./createVersionFile.js",
-    "start": "npm run createVersionFile && react-scripts start",
-    "build": "npm run createVersionFile && react-scripts build && npm run fixPathForGHPages",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-scripts start",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-scripts build && npm run fixPathForGHPages",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

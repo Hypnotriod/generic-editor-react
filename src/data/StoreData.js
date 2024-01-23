@@ -65,6 +65,7 @@ export const getBaseProperties = () => {
  * anchorX: number; 
  * anchorY: number;
  * resourceID: number | null;
+ * resourceName: string | null;
  * }} ISpriteProperties
  */
 
@@ -75,7 +76,8 @@ export const getSpriteProperties = () => {
     return {
         anchorX: 0,
         anchorY: 0,
-        resourceID: null
+        resourceID: null,
+        resourceName: null,
     }
 };
 

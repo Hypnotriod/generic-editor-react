@@ -37,7 +37,7 @@ const SpritePropertiesComponent = ({
 
     useEffect(() => {
         // Edge case when a resource get's removed from resources but the id is still in the sprite property
-        if (resourceID && !resource) updateSpritePropertiesAction({ nodeID: id, resourceID: null });
+        if (resourceID && !resource) updateSpritePropertiesAction({ nodeID: id, resourceID: null, resourceName: null });
     }, [resource]);
 
     const onInputChange = (key, value) => {
@@ -48,7 +48,7 @@ const SpritePropertiesComponent = ({
     };
 
     const onTextureAdded = (key, value) => {
-        updateSpritePropertiesAction({ nodeID: id, properties: { resourceID: value } });
+        updateSpritePropertiesAction({ nodeID: id, properties: { resourceID: value, resourceName: resourcesList[value].name } });
     };
 
     const textureData = {

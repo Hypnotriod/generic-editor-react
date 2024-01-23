@@ -37,7 +37,7 @@ const NineSliceSpritePropertiesComponent = ({
 
     useEffect(() => {
         // Edge case when a resource get's removed from resources but the id is still in the sprite property
-        if (spriteProperties.resourceID && !resource) updateNineSliceSpritePropertiesAction({ nodeID: id, resourceID: null });
+        if (spriteProperties.resourceID && !resource) updateNineSliceSpritePropertiesAction({ nodeID: id, resourceID: null, resourceName: null });
     }, [resource]);
 
     const onInputChange = (key, value) => {
@@ -48,7 +48,7 @@ const NineSliceSpritePropertiesComponent = ({
     };
 
     const onTextureAdded = (key, value) => {
-        updateNineSliceSpritePropertiesAction({ nodeID: id, properties: { resourceID: value } });
+        updateNineSliceSpritePropertiesAction({ nodeID: id, properties: { resourceID: value, resourceName: resourcesList[value].name } });
     };
 
     const textureData = {

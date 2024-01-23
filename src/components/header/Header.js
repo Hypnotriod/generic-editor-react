@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import "./header.css";
 
@@ -35,6 +35,7 @@ import { createNewProject, exportDataAndCreateNew } from "./features/createNewPr
 */
 export const HeaderComponent = (props) => {
     const [isModalVisible, setModalVisibility] = useState(false);
+    const inputExportAs = useRef();
 
     return (
         <header>
@@ -43,7 +44,11 @@ export const HeaderComponent = (props) => {
                 <div id="options">
                     <span onClick={() => setModalVisibility(true)}>New Project</span>
                     <span onClick={() => importData(props)}>Import Files</span>
-                    <span onClick={() => exportData(store)}>Export Files</span>
+                    <span onClick={() => exportData(store, undefined)}>Export Files</span>
+                    <span>
+                        <span onClick={() => exportData(store, inputExportAs.current.value)}>Export Files As</span>
+                        <input type="text" ref={inputExportAs} style={{backgroundColor: "black"}}></input>
+                    </span>
                 </div>
             </div>
             <div>
