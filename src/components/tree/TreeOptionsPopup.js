@@ -3,18 +3,18 @@ import { connect } from "react-redux";
 
 import { NODE_DATA_TYPE_ATTRIBUTE } from ".";
 
-import { createNodeAction, updateNodeNameAction, deleteNodeAction } from "../../store/tree";
-import { initEntityAction, removeEntityAction } from "../../store/entityTypes";
-import { initBasePropertiesAction, updateBasePropertiesAction, removeBasePropertiesAction } from "../../store/properties/base";
-import { initSpritePropertiesAction, updateSpritePropertiesAction, removeSpritePropertiesAction } from "../../store/properties/sprite";
-import { initNineSliceSpritePropertiesAction, updateNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
-import { initGraphicsPropertiesAction, updateGraphicsPropertiesAction, removeGraphicsPropertiesAction } from "../../store/properties/graphics";
-import { initTextPropertiesAction, updateTextPropertiesAction, removeTextPropertiesAction } from "../../store/properties/text";
 import { ENTITY_TYPES, GRAPHICS_TYPES, ROOT_NODE_ID } from "../../data/StoreData";
+import store from "../../store";
+import { initEntityAction, removeEntityAction } from "../../store/entityTypes";
+import { initBasePropertiesAction, removeBasePropertiesAction, updateBasePropertiesAction } from "../../store/properties/base";
+import { initGraphicsPropertiesAction, removeGraphicsPropertiesAction, updateGraphicsPropertiesAction } from "../../store/properties/graphics";
+import { initNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction, updateNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
+import { initSpritePropertiesAction, removeSpritePropertiesAction, updateSpritePropertiesAction } from "../../store/properties/sprite";
+import { initTextPropertiesAction, removeTextPropertiesAction, updateTextPropertiesAction } from "../../store/properties/text";
+import { createNodeAction, deleteNodeAction, updateNodeNameAction } from "../../store/tree";
+import { getNodeByID, getParent } from "../../tools/treeTools";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
-import store from "../../store";
-import { getNodeByID, getParent } from "../../tools/treeTools";
 
 const OPTIONS_MAP = {
     ...ENTITY_TYPES,
@@ -82,14 +82,22 @@ const TreeOptionsPopupComponent = (props) => {
     /**
      * @param {import("../../data/NodeData").INodeData} node
      * @param {string} parentNodeId
+     * @param {{x: number, y: number}} offset
      */
-    const cloneNode = (node, parentNodeId) => {
+    const cloneNode = (node, parentNodeId, offset) => {
         const entity = store.getState().entityTypesList[node.id];
         const newID = getUID();
         props.initBasePropertiesAction(newID);
+        const baseProperties = {
+            ...store.getState().basePropertiesList[node.id],
+        }
+        if (offset) {
+            baseProperties.positionX += offset.x;
+            baseProperties.positionY += offset.y;
+        }
         props.updateBasePropertiesAction({
             nodeID: newID,
-            properties: store.getState().basePropertiesList[node.id],
+            properties: baseProperties,
         });
         props.initEntityAction(newID, entity.type);
         if (entity.type === ENTITY_TYPES.SPRITE) {
@@ -146,7 +154,7 @@ const TreeOptionsPopupComponent = (props) => {
             const treeData = store.getState().tree.treeData;
             const node = getNodeByID(id, treeData);
             const parentNode = getParent(node.id, treeData);
-            cloneNode(node, parentNode.id);
+            cloneNode(node, parentNode.id, { x: 10, y: -10 });
             return;
         }
 
