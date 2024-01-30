@@ -3,38 +3,46 @@ import { connect } from "react-redux";
 
 import { NODE_DATA_TYPE_ATTRIBUTE } from ".";
 
-import { createNodeAction, deleteNodeAction } from "../../store/tree";
+import { createNodeAction, updateNodeNameAction, deleteNodeAction } from "../../store/tree";
 import { initEntityAction, removeEntityAction } from "../../store/entityTypes";
-import { initBasePropertiesAction, removeBasePropertiesAction } from "../../store/properties/base";
-import { initSpritePropertiesAction, removeSpritePropertiesAction } from "../../store/properties/sprite";
-import { initNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
-import { initGraphicsPropertiesAction, removeGraphicsPropertiesAction } from "../../store/properties/graphics";
-import { initTextPropertiesAction, removeTextPropertiesAction } from "../../store/properties/text";
+import { initBasePropertiesAction, updateBasePropertiesAction, removeBasePropertiesAction } from "../../store/properties/base";
+import { initSpritePropertiesAction, updateSpritePropertiesAction, removeSpritePropertiesAction } from "../../store/properties/sprite";
+import { initNineSliceSpritePropertiesAction, updateNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
+import { initGraphicsPropertiesAction, updateGraphicsPropertiesAction, removeGraphicsPropertiesAction } from "../../store/properties/graphics";
+import { initTextPropertiesAction, updateTextPropertiesAction, removeTextPropertiesAction } from "../../store/properties/text";
 import { ENTITY_TYPES, GRAPHICS_TYPES, ROOT_NODE_ID } from "../../data/StoreData";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
 import store from "../../store";
+import { getNodeByID, getParent } from "../../tools/treeTools";
 
 const OPTIONS_MAP = {
     ...ENTITY_TYPES,
-    REMOVE_OPTION: "REMOVE_OPTION"
+    CLONE_OPTION: "CLONE_OPTION",
+    REMOVE_OPTION: "REMOVE_OPTION",
 };
 
 /**
  * @typedef {{
  * createNodeAction: typeof createNodeAction;
+ * updateNodeNameAction: typeof updateNodeNameAction;
  * deleteNodeAction: typeof deleteNodeAction;
  * initEntityAction: typeof  initEntityAction;
  * removeEntityAction: typeof  removeEntityAction;
  * initBasePropertiesAction: typeof  initBasePropertiesAction;
+ * updateBasePropertiesAction: typeof  updateBasePropertiesAction;
  * removeBasePropertiesAction: typeof  removeBasePropertiesAction;
  * initSpritePropertiesAction: typeof  initSpritePropertiesAction;
+ * updateSpritePropertiesAction: typeof  updateSpritePropertiesAction;
  * removeSpritePropertiesAction: typeof  removeSpritePropertiesAction;
  * initGraphicsPropertiesAction: typeof initGraphicsPropertiesAction; 
+ * updateGraphicsPropertiesAction: typeof updateGraphicsPropertiesAction; 
  * removeGraphicsPropertiesAction: typeof removeGraphicsPropertiesAction;
  * initNineSliceSpritePropertiesAction: typeof initNineSliceSpritePropertiesAction;
+ * updateNineSliceSpritePropertiesAction: typeof updateNineSliceSpritePropertiesAction;
  * removeNineSliceSpritePropertiesAction: typeof removeNineSliceSpritePropertiesAction;
  * initTextPropertiesAction: typeof initTextPropertiesAction;
+ * updateTextPropertiesAction: typeof updateTextPropertiesAction;
  * removeTextPropertiesAction: typeof removeTextPropertiesAction;
  * }} TreeOptionsPopupComponentDependencies
  */
@@ -45,8 +53,8 @@ const OPTIONS_MAP = {
  */
 const TreeOptionsPopupComponent = (props) => {
 
-    const canShowRemoveOption = (hoveredElement) => {
-        /* ROOT_NODE_ID can't be deleted so the option will become disabled */
+    const isNotRootNode = (hoveredElement) => {
+        /* ROOT_NODE_ID can't be deleted or clonned so the option will become disabled */
         const id = hoveredElement ? hoveredElement.getAttribute("data-id") : undefined;
         return id && Number(id) !== ROOT_NODE_ID;
     };
@@ -57,7 +65,8 @@ const TreeOptionsPopupComponent = (props) => {
         { option: OPTIONS_MAP.NINE_SLICE_SPRITE, label: "Add 9 Slice Sprite", isAvailable: () => true },
         { option: OPTIONS_MAP.GRAPHICS, label: "Add Graphics", isAvailable: () => true },
         { option: OPTIONS_MAP.TEXT, label: "Add Text", isAvailable: () => true },
-        { option: OPTIONS_MAP.REMOVE_OPTION, label: "Remove", className: "remove-option", isAvailable: canShowRemoveOption },
+        { option: OPTIONS_MAP.CLONE_OPTION, label: "Clone", isAvailable: isNotRootNode },
+        { option: OPTIONS_MAP.REMOVE_OPTION, label: "Remove", className: "remove-option", isAvailable: isNotRootNode },
     ];
 
     const canProcessContextMenu = (event) => {
@@ -69,6 +78,49 @@ const TreeOptionsPopupComponent = (props) => {
     const canProcessClick = (event) => {
         return Boolean(event.target.getAttribute("data-option"));
     };
+
+    /**
+     * @param {import("../../data/NodeData").INodeData} node
+     * @param {string} parentNodeId
+     */
+    const cloneNode = (node, parentNodeId) => {
+        const entity = store.getState().entityTypesList[node.id];
+        const newID = getUID();
+        props.initBasePropertiesAction(newID);
+        props.updateBasePropertiesAction({
+            nodeID: newID,
+            properties: store.getState().basePropertiesList[node.id],
+        });
+        props.initEntityAction(newID, entity.type);
+        if (entity.type === ENTITY_TYPES.SPRITE) {
+            props.initSpritePropertiesAction(newID);
+            props.updateSpritePropertiesAction({
+                nodeID: newID,
+                properties: store.getState().spritePropertiesList[node.id],
+            });
+        } else if (entity.type === ENTITY_TYPES.GRAPHICS) {
+            props.initGraphicsPropertiesAction(newID, GRAPHICS_TYPES.RECTANGLE);
+            props.updateGraphicsPropertiesAction({
+                nodeID: newID,
+                properties: store.getState().graphicsList[node.id],
+            });
+        } else if (entity.type === ENTITY_TYPES.NINE_SLICE_SPRITE) {
+            props.initNineSliceSpritePropertiesAction(newID);
+            props.updateNineSliceSpritePropertiesAction({
+                nodeID: newID,
+                properties: store.getState().nineSliceSpritePropertiesList[node.id],
+            });
+        } else if (entity.type === ENTITY_TYPES.TEXT) {
+            props.initTextPropertiesAction(newID);
+            props.updateTextPropertiesAction({
+                nodeID: newID,
+                properties: store.getState().textPropertiesList[node.id],
+            });
+        }
+        props.createNodeAction(parentNodeId, newID);
+        props.updateNodeNameAction({ nodeID: newID, name: node.name });
+        node.nodes.forEach(n => cloneNode(n, newID));
+    }
 
     const processClick = (event, hoveredElement) => {
         const option = event.target.getAttribute("data-option");
@@ -87,6 +139,14 @@ const TreeOptionsPopupComponent = (props) => {
             else if (entity.type === ENTITY_TYPES.NINE_SLICE_SPRITE) { props.removeNineSliceSpritePropertiesAction(id); }
             else if (entity.type === ENTITY_TYPES.TEXT) { props.removeTextPropertiesAction(id); }
             else { throw new Error("You forgot to add a handler for REMOVE option"); }
+            return;
+        }
+
+        if (option === OPTIONS_MAP.CLONE_OPTION) {
+            const treeData = store.getState().tree.treeData;
+            const node = getNodeByID(id, treeData);
+            const parentNode = getParent(node.id, treeData);
+            cloneNode(node, parentNode.id);
             return;
         }
 
@@ -123,7 +183,7 @@ const TreeOptionsPopupComponent = (props) => {
 
     return (
         <PopupWithOptions {
-            ...{ canShowRemoveOption, canProcessContextMenu, canProcessClick, processClick, optionsMap }
+            ...{ canShowRemoveOption: isNotRootNode, canProcessContextMenu, canProcessClick, processClick, optionsMap }
         } />
     );
 };
@@ -140,18 +200,24 @@ export const TreeOptionsPopup = connect(
     mapStateToProps,
     {
         createNodeAction,
+        updateNodeNameAction,
         deleteNodeAction,
         initEntityAction,
         removeEntityAction,
         initBasePropertiesAction,
+        updateBasePropertiesAction,
         removeBasePropertiesAction,
         initSpritePropertiesAction,
+        updateSpritePropertiesAction,
         removeSpritePropertiesAction,
         initGraphicsPropertiesAction,
+        updateGraphicsPropertiesAction,
         removeGraphicsPropertiesAction,
         initNineSliceSpritePropertiesAction,
+        updateNineSliceSpritePropertiesAction,
         removeNineSliceSpritePropertiesAction,
         initTextPropertiesAction,
+        updateTextPropertiesAction,
         removeTextPropertiesAction
     }
 )(TreeOptionsPopupComponent);
