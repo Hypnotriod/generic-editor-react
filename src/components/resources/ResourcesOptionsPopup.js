@@ -1,16 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { addResourceAction, removeResourceAction } from "../../store/resources";
-import { getUID } from "../../tools/uidGenerator";
-import { createImagesLoader, exportImageFile } from "../../tools/resourcesTools";
-import { PopupWithOptions } from "../optionsPopup";
 import { pixiLoader } from "../../middlewares/pixiLoaderMiddleware";
 import store from "../../store";
+import { addResourceAction, removeResourceAction } from "../../store/resources";
+import { createImagesLoader, exportImageFile } from "../../tools/resourcesTools";
+import { getUID } from "../../tools/uidGenerator";
+import { PopupWithOptions } from "../optionsPopup";
 
 const OPTIONS_MAP = {
     ADD_IMAGE: "ADD_IMAGE",
     DOWNLOAD_IMAGE: "DOWNLOAD_IMAGE",
+    REPLACE_IMAGE: "REPLACE_IMAGE",
     REMOVE_IMAGE: "REMOVE_IMAGE",
 };
 
@@ -41,6 +42,7 @@ const ResourcesOptionsPopupComponent = (props) => {
     const optionsMap = [
         { option: OPTIONS_MAP.ADD_IMAGE, label: "Add Image", isAvailable: () => true },
         { option: OPTIONS_MAP.DOWNLOAD_IMAGE, label: "Download Image", isAvailable: canShowDownloadOption },
+        { option: OPTIONS_MAP.REPLACE_IMAGE, label: "Replace Image", isAvailable: canShowRemoveOption },
         { option: OPTIONS_MAP.REMOVE_IMAGE, label: "Remove Image", className: "remove-option", isAvailable: canShowRemoveOption },
     ];
 
@@ -62,7 +64,6 @@ const ResourcesOptionsPopupComponent = (props) => {
                     props.addResourceAction(data);
                 });
             };
-
             const imageLoaderElement = createImagesLoader(onImagesLoaded);
             imageLoaderElement.click();
             return;
@@ -74,7 +75,20 @@ const ResourcesOptionsPopupComponent = (props) => {
             return;
         }
 
-        if (option === OPTIONS_MAP.REMOVE_IMAGE) {
+        if (option === OPTIONS_MAP.REPLACE_IMAGE) {
+            const onImagesLoaded = (files) => {
+                if (files.length !== 1) { return; }
+                event.target.src = undefined;
+                pixiLoader.loadAssets(files[0], () => {
+                    const data = files.map((file) => ({ id: id, file }));
+                    props.addResourceAction(data);
+                });
+            };
+            const imageLoaderElement = createImagesLoader(onImagesLoaded);
+            imageLoaderElement.click();
+            return;
+        }
+        else if (option === OPTIONS_MAP.REMOVE_IMAGE) {
             pixiLoader.removeAssets(store.getState().resourcesList[id])
             props.removeResourceAction(id);
         }

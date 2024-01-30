@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import "./imageElement.css";
 import { convertImageFileToBase64 } from "../../../tools/resourcesTools";
+import "./imageElement.css";
 
 /**
  * @typedef {{
@@ -31,7 +31,7 @@ const ImageElementComponent = (props) => {
         convertImageFileToBase64(props.resource, (data) => proxy.setParsedResource(data));
 
         return () => (proxy.setParsedResource = () => { });
-    }, [])
+    }, [props.resource])
 
     // @TODO find another way of doing it. I tried to add it to the dataTransfer.items, but it didn't work
     const onDragStart = () => window["__RESOURCE_ID"] = props.id;
