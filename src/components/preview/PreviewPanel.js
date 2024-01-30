@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types'
 import { Provider } from "react-redux";
-import { withApp } from 'react-pixi-fiber';
-import { CGrid } from "./custom/CGrid";
-import { MainScene } from "./MainScene";
 import store from "../../store";
+import { MainScene } from "./MainScene";
 import { CContainer } from "./custom/CContainer";
+import { CGrid } from "./custom/CGrid";
 
 export const PreviewPanel = ({ services }) => {
 
@@ -15,6 +13,10 @@ export const PreviewPanel = ({ services }) => {
         scaleX: 1,
         scaleY: 1,
     });
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const cellSize = searchParams.get('cellSize') || 50;
+    const gridSize = searchParams.get('gridSize') || 100;
 
     useEffect(() => {
         const handleResizeUpdate = (size) => {
@@ -51,7 +53,7 @@ export const PreviewPanel = ({ services }) => {
 
     return (
         <CContainer {...{ id: "CameraContainer", rotation: 0, ...cameraData }}>
-            <CGrid {...{ id: "CGrid", cellSize: 50, gridSize: 100, color: 0xc2c2c2, lineWidth: 2 }} />
+            <CGrid {...{ id: "CGrid", cellSize, gridSize, color: 0xc2c2c2, lineWidth: 2 }} />
             {/* 
                 I have to rewrap the <MainScene /> with provider because, apparently, pixi fiber components inherently get context from pixi, so I need to set it back.
                 Otherwise, I see: 

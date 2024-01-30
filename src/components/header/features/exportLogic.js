@@ -14,10 +14,10 @@ const FILE_DESCRIPTION = {
 };
 
 const FILE_NAMES = {
-    MAIN: "main-scene.json",
-    RESOURCES: "main-assets-base64.json",
-    MAIN_SUFFIX: "-scene.json",
-    RESOURCES_SUFFIX: "-assets-base64.json",
+    MAIN: "main_scene.json",
+    RESOURCES: "main_assets_base64.json",
+    MAIN_SUFFIX: ".json",
+    RESOURCES_SUFFIX: "_assets.json",
 };
 
 /**
