@@ -1,5 +1,5 @@
 import { createNode } from "./NodeData";
-import { ENTITY_TYPES, ROOT_NODE_ID, getBaseProperties, getEntityType } from "./StoreData";
+import { DEFAULT_CELL_SIZE, DEFAULT_GRID_SIZE, ENTITY_TYPES, ROOT_NODE_ID, getBaseProperties, getEntityType } from "./StoreData";
 
 /* 
     By default, (for new projects) 
@@ -15,7 +15,7 @@ export const defaultStoreData = {
     },
     properties: {
         base: {
-            [ROOT_NODE_ID]: getBaseProperties()
+            [ROOT_NODE_ID]: { ...getBaseProperties(), cellSize: DEFAULT_CELL_SIZE, gridSize: DEFAULT_GRID_SIZE }
         },
         sprite: {},
         nineSliceSprite: {},

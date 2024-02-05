@@ -3,6 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { updateBasePropertiesAction } from "../../../store/properties/base";
 
+import { ROOT_NODE_ID } from "../../../data/StoreData";
 import { NumberInput, PointInput } from "../genericInputs";
 
 
@@ -46,6 +47,14 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         onChange
     };
 
+    const gridData = {
+        label: "Grid Props",
+        dataIDs: ["cellSize", "gridSize"],
+        values: [baseProperty.cellSize, baseProperty.gridSize],
+        signs: ["Cell", "Grid"],
+        onChange
+    };
+
     const angleData = {
         label: "Rotation",
         dataID: "rotation",
@@ -56,6 +65,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
 
     return (
         <div className="properties propertiesTopOffset">
+            {nodeID === ROOT_NODE_ID && <PointInput {...gridData} />}
             <PointInput {...positionData} />
             <PointInput {...scaleData} />
             <NumberInput {...angleData} />

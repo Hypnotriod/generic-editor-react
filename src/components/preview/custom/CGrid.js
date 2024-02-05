@@ -1,22 +1,33 @@
 
-import { CustomPIXIComponent } from "react-pixi-fiber";
 import { Container, Graphics } from "pixi.js";
-import { toRadians } from "../../../tools/math";
+import { CustomPIXIComponent } from "react-pixi-fiber";
+import { DEFAULT_CELL_SIZE, DEFAULT_GRID_SIZE } from "../../../data/StoreData";
 
 export const behavior = {
-    customDisplayObject: ({ id, cellSize, gridSize, color, lineWidth }) => {
+    customDisplayObject: () => new Container(),
+    customApplyProps: (instance, _, { id, cellSize, gridSize, color, lineWidth }) => {
+
         // cellSize size of each square in the grid
         // gridSize the length of a side of the square
 
-        const gridContainer = new Container();
-        gridContainer.name = id;
+        if (cellSize === undefined) { cellSize = DEFAULT_CELL_SIZE; }
+        if (gridSize === undefined) { gridSize = DEFAULT_GRID_SIZE; }
 
         const totalWidth = cellSize * gridSize;
         const totalHeight = cellSize * gridSize;
 
-        gridContainer.position.set(-totalWidth / 2, -totalHeight / 2)
+        instance.name = id;
+        instance.position.set(-totalWidth / 2, -totalHeight / 2)
+        instance.cacheAsBitmap = false;
 
-        const graphics = new Graphics();
+        let graphics = instance.getChildByName('__grid_graphics');
+        if (!graphics) {
+            graphics = new Graphics();
+            graphics.name = '__grid_graphics';
+            instance.addChild(graphics);
+        }
+
+        graphics.clear();
 
         // grid
         graphics.lineStyle(lineWidth, color);
@@ -46,12 +57,7 @@ export const behavior = {
         graphics.drawRect(0, 0, totalWidth, totalHeight);
         graphics.endFill();
 
-        gridContainer.addChild(graphics);
-
-        gridContainer.cacheAsBitmap = true;
-        return gridContainer;
-
-    },
-    customApplyProps: () => { }
+        instance.cacheAsBitmap = false;
+    }
 };
 export const CGrid = CustomPIXIComponent(behavior, "CGrid");

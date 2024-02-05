@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Provider } from "react-redux";
-import store from "../../store";
+import { connect } from "react-redux";
+import { ROOT_NODE_ID } from "../../data/StoreData";
 import { MainScene } from "./MainScene";
 import { CContainer } from "./custom/CContainer";
 import { CGrid } from "./custom/CGrid";
 
-export const PreviewPanel = ({ services }) => {
+export const PreviewPanelComponent = ({ basePropertiesList, services }) => {
 
     const [cameraData, setCameraData] = useState({
         positionX: 0,
@@ -13,10 +13,6 @@ export const PreviewPanel = ({ services }) => {
         scaleX: 1,
         scaleY: 1,
     });
-
-    const searchParams = new URLSearchParams(window.location.search);
-    const cellSize = searchParams.get('cellSize') || 50;
-    const gridSize = searchParams.get('gridSize') || 100;
 
     useEffect(() => {
         const handleResizeUpdate = (size) => {
@@ -53,18 +49,22 @@ export const PreviewPanel = ({ services }) => {
 
     return (
         <CContainer {...{ id: "CameraContainer", rotation: 0, ...cameraData }}>
-            <CGrid {...{ id: "CGrid", cellSize, gridSize, color: 0xc2c2c2, lineWidth: 2 }} />
-            {/* 
-                I have to rewrap the <MainScene /> with provider because, apparently, pixi fiber components inherently get context from pixi, so I need to set it back.
-                Otherwise, I see: 
-                `Could not find "store" in the context of "Connect(MainSceneComponent)". 
-                Either wrap the root component in a <Provider>, or pass a custom React context provider to <Provider>
-                and the corresponding React context consumer to Connect(MainSceneComponent) in connect options.`
-
-            */}
-            <Provider store={store}>
-                <MainScene />
-            </Provider>
+            <CGrid id="CGrid"
+                cellSize={basePropertiesList[ROOT_NODE_ID].cellSize}
+                gridSize={basePropertiesList[ROOT_NODE_ID].gridSize}
+                color={0xc2c2c2}
+                lineWidth={2} />
+            <MainScene />
         </CContainer>
     );
 };
+
+const mapStateToProps = (store) => {
+    return {
+        basePropertiesList: store.basePropertiesList,
+    };
+};
+
+export const PreviewPanel = connect(
+    mapStateToProps, {}
+)(PreviewPanelComponent)

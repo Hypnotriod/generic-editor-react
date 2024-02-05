@@ -1,29 +1,31 @@
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./app.css";
 
+import { Application } from "pixi.js";
 import { Stage } from 'react-pixi-fiber';
-import { Application } from "pixi.js"
 
 import { Header } from "./components/header";
-import { TreeController, TreeOptionsPopup } from "./components/tree";
-import { PropertiesPanel } from "./components/properties";
-import { ResourcesPanel, ResourcesOptionsPopup } from "./components/resources";
 import { PreviewPanel } from "./components/preview";
+import { PropertiesPanel } from "./components/properties";
+import { ResourcesOptionsPopup, ResourcesPanel } from "./components/resources";
+import { TreeController, TreeOptionsPopup } from "./components/tree";
 
 import { InteractiveTransformTools } from "./components/transformTools/InteractiveTransformTools";
 import { ViewCameraController } from "./services/ViewCameraController";
 import { ViewResizeController } from "./services/ViewResizeController";
 // I have to copy it because the available npm packages incompatible with pixi 4.6.0 this project use 
-import { getChildByName, getChildRelativePosition, getGlobalRotation } from "./services/ViewTools";
-import { ViewGizmoPositionArrows } from "./services/ViewGizmoPositionArrows";
-import { ViewGizmoScaleBox } from "./services/ViewGizmoScaleBox";
-import { ViewGizmoRotation } from "./services/ViewGizmoRotation";
 import { DOMGizmoButtons } from "./services/DOMGizmoButtons";
+import { ViewGizmoPositionArrows } from "./services/ViewGizmoPositionArrows";
+import { ViewGizmoRotation } from "./services/ViewGizmoRotation";
+import { ViewGizmoScaleBox } from "./services/ViewGizmoScaleBox";
+import { getChildByName, getChildRelativePosition, getGlobalRotation } from "./services/ViewTools";
 
+import { Provider } from "react-redux";
 import move from "./assets/icons/move.png";
 import resize from "./assets/icons/resize.png";
 import rotate from "./assets/icons/rotate.png";
+import store from "./store";
 
 
 export const App = () => {
@@ -76,7 +78,9 @@ export const App = () => {
         {
           services === null ? null : (
             <Stage app={services.app}>
-              <PreviewPanel services={services} />
+              <Provider store={store}>
+                <PreviewPanel services={services} />
+              </Provider>
               <InteractiveTransformTools services={services} />
             </Stage>
           )
