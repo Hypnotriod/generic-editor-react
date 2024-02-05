@@ -21,7 +21,7 @@ export const NumberInput = ({
     value,
     onChange,
     dataID,
-    step = 0.5,
+    step = 1,
     sign = "",
     middleware = (event) => event
 }) => {

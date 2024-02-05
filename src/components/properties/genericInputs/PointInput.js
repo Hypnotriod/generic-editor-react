@@ -21,7 +21,7 @@ export const PointInput = ({
     values,
     onChange,
     dataIDs,
-    step = 0.5,
+    step = 1,
     signs = ["", ""],
     middleware = (event) => event
 }) => {
