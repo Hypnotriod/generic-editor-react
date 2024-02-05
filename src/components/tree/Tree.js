@@ -8,18 +8,18 @@ import { connect } from "react-redux";
 
 /**
 * @typedef {{
- * treeData:  import("../../store/tree").ITreeState["treeData"];
+ * treeState:  import("../../store/tree").ITreeState;
  * }} TreeComponentDependencies
  */
 
 /**
 * @param { TreeComponentDependencies} props 
 */
-const TreeComponent = ({ treeData }) => {
+const TreeComponent = ({ treeState }) => {
 
     return (
         <>
-            {treeData ? <Node key={treeData.id} node={treeData} /> : null}
+            {treeState.treeData ? <Node key={treeState.treeData.id} node={treeState.treeData} selectedNodeID={treeState.selectedNodeID} /> : null}
         </>
     );
 };
@@ -29,7 +29,7 @@ const TreeComponent = ({ treeData }) => {
  */
 const mapStateToProps = ({ tree }) => {
     return {
-        treeData: tree.treeData,
+        treeState: tree,
     };
 };
 
