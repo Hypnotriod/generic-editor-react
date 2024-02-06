@@ -19,7 +19,11 @@ const TreeComponent = ({ treeState }) => {
 
     return (
         <>
-            {treeState.treeData ? <Node key={treeState.treeData.id} node={treeState.treeData} selectedNodeID={treeState.selectedNodeID} /> : null}
+            {treeState.treeData ? <Node
+                key={treeState.treeData.id}
+                node={treeState.treeData}
+                selectedNodeID={treeState.selectedNodeID}
+                copyNodeID={treeState.copyNodeID} /> : null}
         </>
     );
 };

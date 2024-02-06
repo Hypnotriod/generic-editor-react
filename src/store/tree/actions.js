@@ -8,6 +8,15 @@ export const setSelectedNodeIDAction = (nodeID) => {
     return { type: TREE_ACTIONS.SET_SELECTED_NODE_ID, payload: nodeID }
 };
 
+
+/**
+ * Set node id to be copied.
+ * @param {number | null} nodeID 
+ */
+export const setCopyNodeIDAction = (nodeID) => {
+    return { type: TREE_ACTIONS.SET_COPY_NODE_ID, payload: nodeID }
+};
+
 /**
  * Append node is used just to append newly created nodes
  * @param {{

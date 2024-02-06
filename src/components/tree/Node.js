@@ -24,20 +24,22 @@ const ICONS_TO_ENTITIES_MAP = {
  * @param {{
  *  node: import("../../data/NodeData").INodeData
  *  selectedNodeID: selectedNodeID: null | number
+ *  copyNodeID: selectedNodeID: null | number
  * }} props 
  */
-export const Node = ({ node, selectedNodeID }) => {
+export const Node = ({ node, selectedNodeID, copyNodeID }) => {
     const [collapsed, setCollapsed] = useState(true);
 
     const nodesList = <div className="node-nodes">
-        {node.nodes.map(node => <Node key={node.id} node={node} selectedNodeID={selectedNodeID} />)}
+        {node.nodes.map(node => <Node key={node.id} node={node} selectedNodeID={selectedNodeID} copyNodeID={copyNodeID} />)}
     </div>;
 
     const toggler = <div className="toggler" onClick={() => setCollapsed(!collapsed)}>{collapsed ? <>&#43;</> : <>&#x2212;</>}</div>;
 
     const entityType = store.getState().entityTypesList[node.id].type;
     const iconStyle = { backgroundImage: `url(${ICONS_TO_ENTITIES_MAP[entityType]})` };
-    const frameStyle = selectedNodeID === node.id ? { backgroundColor: "darkgreen" } : {};
+    const frameStyle = selectedNodeID === node.id ? { backgroundColor: "darkgreen" } :
+        copyNodeID === node.id ? { backgroundColor: "darkgoldenrod" } : {};
 
     return (
         <div className="node">

@@ -1,5 +1,6 @@
 export const TREE_ACTIONS = Object.freeze({
     SET_SELECTED_NODE_ID: "SET_SELECTED_NODE_ID",
+    SET_COPY_NODE_ID: "SET_COPY_NODE_ID",
     // moving nodes in the tree hierarchy
     INSERT_BEFORE_NODE: "INSERT_BEFORE_NODE",
     MOVE_NODE: "MOVE_NODE",

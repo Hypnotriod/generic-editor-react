@@ -1,15 +1,14 @@
 import React from "react";
 import { createNode } from "../../data/NodeData";
 import { getNodeByID, isChild, isParent } from "../../tools/treeTools";
-import { getPositionInTheBox, PositionsInTheBox } from "../../tools/treeUITools";
-import { Node } from "./Node";
+import { PositionsInTheBox, getPositionInTheBox } from "../../tools/treeUITools";
 
 import "./tree.css";
 
 import { connect } from "react-redux";
-import { moveNodeAction, insertBeforeNodeAction, setSelectedNodeIDAction } from "../../store/tree";
 import { ROOT_NODE_ID } from "../../data/StoreData";
 import store from "../../store";
+import { insertBeforeNodeAction, moveNodeAction, setSelectedNodeIDAction } from "../../store/tree";
 import { Tree } from "./Tree";
 
 const UI_CLASS_NAMES = {

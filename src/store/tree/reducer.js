@@ -8,6 +8,7 @@ import { mockStoreData } from "../../data/MockStreData";
  * @typedef {{
  * treeData: import("../../data/NodeData").INodeData | null;
  * selectedNodeID: null | number;
+ * copyNodeID: null | number;
  * }} ITreeState;
  */
 
@@ -70,6 +71,17 @@ const processSelectNodeIDAction = (state, payload) => {
  * @param {*} payload 
  * @returns {ITreeState}
  */
+const processCopyNodeIDAction = (state, payload) => {
+    const newState = { ...state, copyNodeID: payload };
+    return newState;
+};
+
+/**
+ * 
+ * @param {ITreeState} state 
+ * @param {*} payload 
+ * @returns {ITreeState}
+ */
 const processUpdateNodeNameAction = (state, payload) => {
     const treeData = { ...state.treeData }
     const newState = { ...state, treeData };
@@ -91,7 +103,8 @@ const processDeleteNodeNameAction = (state, payload) => {
         treeData,
         // just in case if a currently selected node is the one we are removing.
         // otherwise we will have errors in other components
-        selectedNodeID: payload.nodeID === state.selectedNodeID ? null : state.selectedNodeID
+        selectedNodeID: payload.nodeID === state.selectedNodeID ? null : state.selectedNodeID,
+        copyNodeID: payload.nodeID === state.copyNodeID ? null : state.copyNodeID,
     };
 
     if (!removeNode(payload.nodeID, newState.treeData)) {
@@ -123,6 +136,9 @@ export const treeReducer = (state = STATE, { type, payload }) => {
     switch (type) {
         case TREE_ACTIONS.SET_SELECTED_NODE_ID:
             return processSelectNodeIDAction(state, payload);
+
+        case TREE_ACTIONS.SET_COPY_NODE_ID:
+            return processCopyNodeIDAction(state, payload);
 
         case TREE_ACTIONS.INSERT_BEFORE_NODE:
             return processInsertBeforeNodeAction(state, payload);

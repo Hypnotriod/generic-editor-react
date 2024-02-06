@@ -11,7 +11,7 @@ import { initGraphicsPropertiesAction, removeGraphicsPropertiesAction, updateGra
 import { initNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction, updateNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
 import { initSpritePropertiesAction, removeSpritePropertiesAction, updateSpritePropertiesAction } from "../../store/properties/sprite";
 import { initTextPropertiesAction, removeTextPropertiesAction, updateTextPropertiesAction } from "../../store/properties/text";
-import { createNodeAction, deleteNodeAction, updateNodeNameAction } from "../../store/tree";
+import { createNodeAction, deleteNodeAction, updateNodeNameAction, setCopyNodeIDAction } from "../../store/tree";
 import { getNodeByID, getParent } from "../../tools/treeTools";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
@@ -19,6 +19,8 @@ import { PopupWithOptions } from "../optionsPopup";
 const OPTIONS_MAP = {
     ...ENTITY_TYPES,
     CLONE_OPTION: "CLONE_OPTION",
+    COPY_OPTION: "COPY_OPTION",
+    PASTE_OPTION: "PASTE_OPTION",
     REMOVE_OPTION: "REMOVE_OPTION",
 };
 
@@ -56,8 +58,12 @@ const TreeOptionsPopupComponent = (props) => {
     const isNotRootNode = (hoveredElement) => {
         /* ROOT_NODE_ID can't be deleted or clonned so the option will become disabled */
         const id = hoveredElement ? hoveredElement.getAttribute("data-id") : undefined;
-        return id && Number(id) !== ROOT_NODE_ID;
+        return Boolean(id) && Number(id) !== ROOT_NODE_ID;
     };
+
+    const hasCopiedNodeId = () => {
+        return Boolean(store.getState().tree.copyNodeID);
+    }
 
     const optionsMap = [
         { option: OPTIONS_MAP.CONTAINER, label: "Add Container", isAvailable: () => true },
@@ -66,6 +72,8 @@ const TreeOptionsPopupComponent = (props) => {
         { option: OPTIONS_MAP.GRAPHICS, label: "Add Graphics", isAvailable: () => true },
         { option: OPTIONS_MAP.TEXT, label: "Add Text", isAvailable: () => true },
         { option: OPTIONS_MAP.CLONE_OPTION, label: "Clone", isAvailable: isNotRootNode },
+        { option: OPTIONS_MAP.COPY_OPTION, label: "Copy", isAvailable: isNotRootNode },
+        { option: OPTIONS_MAP.PASTE_OPTION, label: "Paste", isAvailable: hasCopiedNodeId },
         { option: OPTIONS_MAP.REMOVE_OPTION, label: "Remove", className: "remove-option", isAvailable: isNotRootNode },
     ];
 
@@ -83,10 +91,14 @@ const TreeOptionsPopupComponent = (props) => {
      * @param {import("../../data/NodeData").INodeData} node
      * @param {string} parentNodeId
      * @param {{x: number, y: number}} offset
+     * @param {number[]} newNodeIds
      */
-    const cloneNode = (node, parentNodeId, offset) => {
+    const cloneNode = (node, parentNodeId, offset, newNodeIds) => {
+        newNodeIds = newNodeIds || [];
+        if (newNodeIds.includes(node.id)) { return; }
         const entity = store.getState().entityTypesList[node.id];
         const newID = getUID();
+        newNodeIds.push(newID);
         props.initBasePropertiesAction(newID);
         const baseProperties = {
             ...store.getState().basePropertiesList[node.id],
@@ -127,7 +139,7 @@ const TreeOptionsPopupComponent = (props) => {
         }
         props.createNodeAction(parentNodeId, newID);
         props.updateNodeNameAction({ nodeID: newID, name: node.name });
-        node.nodes.forEach(n => cloneNode(n, newID));
+        node.nodes.forEach(n => cloneNode(n, newID, undefined, newNodeIds));
     }
 
     const processClick = (event, hoveredElement) => {
@@ -155,6 +167,18 @@ const TreeOptionsPopupComponent = (props) => {
             const node = getNodeByID(id, treeData);
             const parentNode = getParent(node.id, treeData);
             cloneNode(node, parentNode.id, { x: 10, y: -10 });
+            return;
+        }
+
+        if (option === OPTIONS_MAP.COPY_OPTION) {
+            props.setCopyNodeIDAction(id);
+            return;
+        }
+
+        if (option === OPTIONS_MAP.PASTE_OPTION) {
+            const treeData = store.getState().tree.treeData;
+            const node = getNodeByID(store.getState().tree.copyNodeID, treeData);
+            cloneNode(node, id, { x: 0, y: 0 });
             return;
         }
 
@@ -209,6 +233,7 @@ export const TreeOptionsPopup = connect(
     {
         createNodeAction,
         updateNodeNameAction,
+        setCopyNodeIDAction,
         deleteNodeAction,
         initEntityAction,
         removeEntityAction,
