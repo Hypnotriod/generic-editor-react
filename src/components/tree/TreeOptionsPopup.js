@@ -179,6 +179,7 @@ const TreeOptionsPopupComponent = (props) => {
             const treeData = store.getState().tree.treeData;
             const node = getNodeByID(store.getState().tree.copyNodeID, treeData);
             cloneNode(node, id, { x: 0, y: 0 });
+            props.setCopyNodeIDAction(null);
             return;
         }
 

@@ -2,30 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Chrome",
+            "name": "Launch Chrome",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "React",
-            "type": "node",
-            "request": "launch",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script",
-                "start"
-            ]
-        }
-    ],
-    "compounds": [
-        {
-            "name": "React Start + Open Chrome",
-            "configurations": [
-                "React",
-                "Chrome"
-            ]
         }
     ]
 }
