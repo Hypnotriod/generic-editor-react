@@ -1,5 +1,6 @@
+import { DEFAULT_CELL_SIZE, DEFAULT_GRID_SIZE } from "../components/preview/custom/CGrid";
 import { createNode } from "./NodeData";
-import { DEFAULT_CELL_SIZE, DEFAULT_GRID_SIZE, ENTITY_TYPES, ROOT_NODE_ID, getBaseProperties, getEntityType } from "./StoreData";
+import { ENTITY_TYPES, ROOT_NODE_ID, getBaseProperties, getEntityType } from "./StoreData";
 
 /* 
     By default, (for new projects) 

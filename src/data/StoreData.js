@@ -1,6 +1,4 @@
 export const ROOT_NODE_ID = 1;
-export const DEFAULT_CELL_SIZE = 50;
-export const DEFAULT_GRID_SIZE = 100;
 
 // I haven't decided if the editor will support some extra COMPONENTS like collision  box or mask etc
 export const AVAILABLE_COMPONENTS = Object.freeze({

@@ -1,7 +1,10 @@
 
 import { Container, Graphics } from "pixi.js";
 import { CustomPIXIComponent } from "react-pixi-fiber";
-import { DEFAULT_CELL_SIZE, DEFAULT_GRID_SIZE } from "../../../data/StoreData";
+
+export const DEFAULT_CELL_SIZE = 50;
+export const DEFAULT_GRID_SIZE = 100;
+export const GRID_GRAPHICS_DISPLAY_OBJECT_NAME = '__grid_graphics';
 
 export const behavior = {
     customDisplayObject: () => new Container(),
@@ -20,10 +23,10 @@ export const behavior = {
         instance.position.set(-totalWidth / 2, -totalHeight / 2)
         instance.cacheAsBitmap = false;
 
-        let graphics = instance.getChildByName('__grid_graphics');
+        let graphics = instance.getChildByName(GRID_GRAPHICS_DISPLAY_OBJECT_NAME);
         if (!graphics) {
             graphics = new Graphics();
-            graphics.name = '__grid_graphics';
+            graphics.name = GRID_GRAPHICS_DISPLAY_OBJECT_NAME;
             instance.addChild(graphics);
         }
 

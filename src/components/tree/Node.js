@@ -24,7 +24,7 @@ const ICONS_TO_ENTITIES_MAP = {
  * @param {{
  *  node: import("../../data/NodeData").INodeData
  *  selectedNodeID: selectedNodeID: null | number
- *  copyNodeID: selectedNodeID: null | number
+ *  copyNodeID: copyNodeID: null | number
  * }} props 
  */
 export const Node = ({ node, selectedNodeID, copyNodeID }) => {
