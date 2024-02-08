@@ -2,6 +2,7 @@ import React from "react";
 import { ENTITY_TYPES } from "../../../data/StoreData";
 import { CContainer } from "./CContainer";
 import { CSprite } from "./CSprite";
+import { CSpine } from "./CSpine";
 import { CGraphics } from "./CGraphics";
 import { CNineSlicePlane } from "./CNineSlicePlane";
 import { Texture } from "pixi.js";
@@ -12,6 +13,7 @@ import { CText } from "./CText";
  * @param {import("../../../data/NodeData").INodeData} nodeData
  * @param {import("../../../store/properties/base").IBasePropertiesListState} basePropertiesList
  * @param {import("../../../store/properties/sprite").ISpritePropertiesListState} spritePropertiesList
+ * @param {import("../../../store/properties/spine").ISpinePropertiesListState} spinePropertiesList
  * @param {import("../../../store/properties/nineSliceSprite").INineSliceSpritePropertiesListState} nineSliceSpritePropertiesList
  * @param {import("../../../store/entityTypes").IEntityTypesListState} entityTypesList
  * @param {import("../../../store/resources").IResourcesListState} resourcesList
@@ -25,7 +27,8 @@ export const createPixiTree = (nodeData, dependencies) => {
         resourcesList,
         graphicsList,
         nineSliceSpritePropertiesList,
-        textPropertiesList
+        textPropertiesList,
+        spinePropertiesList,
     } = dependencies;
 
     const entity = entityTypesList[nodeData.id];
@@ -47,6 +50,17 @@ export const createPixiTree = (nodeData, dependencies) => {
             <CSprite key={nodeData.id} id={nodeData.id} {...{ texture, ...baseProps, ...spriteProps }}>
                 {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
             </CSprite>
+        );
+    }
+    if (entity.type === ENTITY_TYPES.SPINE) {
+        const spineProps = spinePropertiesList[nodeData.id];
+        const resource = resourcesList[spineProps.resourceID];
+        const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
+
+        return (
+            <CSpine key={nodeData.id} id={nodeData.id} {...{ texture, ...baseProps, ...spineProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
+            </CSpine>
         );
     }
     if (entity.type === ENTITY_TYPES.GRAPHICS) {

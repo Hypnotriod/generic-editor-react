@@ -11,8 +11,8 @@ export const ENTITY_TYPES = Object.freeze({
     SPRITE: "SPRITE",
     GRAPHICS: "GRAPHICS",
     NINE_SLICE_SPRITE: "NINE_SLICE_SPRITE",
-    TEXT: "TEXT"
-
+    TEXT: "TEXT",
+    SPINE: "SPINE",
 
     // ANIMATED_SPRITE: "ANIMATED_SPRITE",
 });
@@ -318,5 +318,29 @@ export const getNineSliceSpriteProperties = () => {
         width: 50,
         height: 50,
         resourceID: null
+    }
+}
+
+
+// SPINE ==============================
+
+/**
+ * @typedef {{
+* anchorX: number; 
+* anchorY: number;
+* resourceID: number | null;
+* resourceName: string | null;
+* }} ISpineProperties
+*/
+
+/**
+* @returns ISpineProperties
+*/
+export const getSpineProperties = () => {
+    return {
+        anchorX: 0,
+        anchorY: 0,
+        resourceID: null,
+        resourceName: null,
     }
 }

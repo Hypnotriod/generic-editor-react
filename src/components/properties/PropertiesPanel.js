@@ -10,6 +10,7 @@ import { SpriteEntity, isSpriteEntity } from "./SpriteEntity";
 import { GraphicsEntity, isGraphicsEntity } from "./GraphicsEntity";
 import { NineSliceSpriteEntity, isNineSliceSpriteEntity } from "./NineSliceSpriteEntity";
 import { TextEntity, isTextEntity } from "./TextEntity";
+import { SpineEntity, isSpineEntity } from "./SpineEntity";
 
 const ENTITY_TYPES_TO_COMPONENTS_MAP = [
     { checker: isContainerEntity, component: <ContainerEntity /> },
@@ -17,6 +18,7 @@ const ENTITY_TYPES_TO_COMPONENTS_MAP = [
     { checker: isGraphicsEntity, component: <GraphicsEntity /> },
     { checker: isNineSliceSpriteEntity, component: <NineSliceSpriteEntity /> },
     { checker: isTextEntity, component: <TextEntity /> },
+    { checker: isSpineEntity, component: <SpineEntity /> },
 ]
 
 const PropertiesPanelComponent = (props) => {

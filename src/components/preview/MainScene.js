@@ -11,6 +11,7 @@ import { createPixiTree } from "./custom/createPixiTree";
  * graphicsList: import("../../store/properties/graphics").IGraphicsPropertiesListState;
  * textPropertiesList: import("../../store/properties/text").ITextPropertiesListState;
  * entityTypesList: import("../../store/entityTypes").IEntityTypesListState;
+ * spinePropertiesList: import("../../store/properties/spine").ISpinePropertiesListState;
  * resourcesList: import("../../store/resources").IResourcesListState;
  * }} MainSceneComponentDependencies
  */
@@ -38,7 +39,8 @@ const mapStateToProps = (store) => {
         entityTypesList: store.entityTypesList,
         resourcesList: store.resourcesList,
         graphicsList: store.graphicsList,
-        textPropertiesList: store.textPropertiesList
+        textPropertiesList: store.textPropertiesList,
+        spinePropertiesList: store.spinePropertiesList,
     };
 };
 

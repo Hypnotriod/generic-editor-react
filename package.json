@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "lodash": "^4.17.21",
+    "pixi-spine": "^3.1.2",
     "pixi.js": "^4.6.0",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
@@ -22,9 +23,9 @@
     "deploy": "gh-pages -d build",
     "fixPathForGHPages": "node ./fixPathForGHPages.js",
     "createVersionFile": "node ./createVersionFile.js",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-scripts start",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-scripts build && npm run fixPathForGHPages",
-    "test": "react-scripts test",
+    "start": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-app-rewired start",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-app-rewired build && npm run fixPathForGHPages",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -46,6 +47,7 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^5.0.0"
+    "gh-pages": "^5.0.0",
+    "react-app-rewired": "^2.2.1"
   }
 }

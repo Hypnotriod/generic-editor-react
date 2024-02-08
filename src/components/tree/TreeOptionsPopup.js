@@ -11,6 +11,7 @@ import { initGraphicsPropertiesAction, removeGraphicsPropertiesAction, updateGra
 import { initNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAction, updateNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
 import { initSpritePropertiesAction, removeSpritePropertiesAction, updateSpritePropertiesAction } from "../../store/properties/sprite";
 import { initTextPropertiesAction, removeTextPropertiesAction, updateTextPropertiesAction } from "../../store/properties/text";
+import { initSpinePropertiesAction, removeSpinePropertiesAction, updateSpinePropertiesAction } from "../../store/properties/spine";
 import { createNodeAction, deleteNodeAction, updateNodeNameAction, setCopyNodeIDAction } from "../../store/tree";
 import { getNodeByID, getParent } from "../../tools/treeTools";
 import { getUID } from "../../tools/uidGenerator";
@@ -46,6 +47,9 @@ const OPTIONS_MAP = {
  * initTextPropertiesAction: typeof initTextPropertiesAction;
  * updateTextPropertiesAction: typeof updateTextPropertiesAction;
  * removeTextPropertiesAction: typeof removeTextPropertiesAction;
+ * initSpinePropertiesAction: typeof  initSpinePropertiesAction;
+ * updateSpinePropertiesAction: typeof  updateSpinePropertiesAction;
+ * removeSpinePropertiesAction: typeof  removeSpinePropertiesAction;
  * }} TreeOptionsPopupComponentDependencies
  */
 
@@ -71,6 +75,7 @@ const TreeOptionsPopupComponent = (props) => {
         { option: OPTIONS_MAP.NINE_SLICE_SPRITE, label: "Add 9 Slice Sprite", isAvailable: () => true },
         { option: OPTIONS_MAP.GRAPHICS, label: "Add Graphics", isAvailable: () => true },
         { option: OPTIONS_MAP.TEXT, label: "Add Text", isAvailable: () => true },
+        { option: OPTIONS_MAP.SPINE, label: "Add Spine", isAvailable: () => true },
         { option: OPTIONS_MAP.CLONE_OPTION, label: "Clone", isAvailable: isNotRootNode },
         { option: OPTIONS_MAP.COPY_OPTION, label: "Copy", isAvailable: isNotRootNode },
         { option: OPTIONS_MAP.PASTE_OPTION, label: "Paste", isAvailable: hasCopiedNodeId },
@@ -135,6 +140,12 @@ const TreeOptionsPopupComponent = (props) => {
             props.updateTextPropertiesAction({
                 nodeID: newID,
                 properties: store.getState().textPropertiesList[node.id],
+            });
+        } else if (entity.type === ENTITY_TYPES.SPINE) {
+            props.initSpinePropertiesAction(newID);
+            props.updateSpinePropertiesAction({
+                nodeID: newID,
+                properties: store.getState().spinePropertiesList[node.id],
             });
         }
         props.createNodeAction(parentNodeId, newID);
@@ -205,6 +216,10 @@ const TreeOptionsPopupComponent = (props) => {
             props.initEntityAction(newID, ENTITY_TYPES.TEXT);
             props.initTextPropertiesAction(newID);
         }
+        else if (option === OPTIONS_MAP.SPINE) {
+            props.initEntityAction(newID, ENTITY_TYPES.SPINE);
+            props.initSpinePropertiesAction(newID);
+        }
         else {
             throw new Error("You forgot to add a handler for ADD option")
         }
@@ -252,6 +267,9 @@ export const TreeOptionsPopup = connect(
         removeNineSliceSpritePropertiesAction,
         initTextPropertiesAction,
         updateTextPropertiesAction,
-        removeTextPropertiesAction
+        removeTextPropertiesAction,
+        initSpinePropertiesAction,
+        updateSpinePropertiesAction,
+        removeSpinePropertiesAction,
     }
 )(TreeOptionsPopupComponent);

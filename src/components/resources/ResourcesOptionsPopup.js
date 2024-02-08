@@ -4,12 +4,13 @@ import { connect } from "react-redux";
 import { pixiLoader } from "../../middlewares/pixiLoaderMiddleware";
 import store from "../../store";
 import { addResourceAction, removeResourceAction } from "../../store/resources";
-import { createImagesLoader, exportImageFile } from "../../tools/resourcesTools";
+import { createImagesLoader, createJSONLoader, exportImageFile } from "../../tools/resourcesTools";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
 
 const OPTIONS_MAP = {
     ADD_IMAGE: "ADD_IMAGE",
+    ADD_JSON: "ADD_JSON",
     DOWNLOAD_IMAGE: "DOWNLOAD_IMAGE",
     REPLACE_IMAGE: "REPLACE_IMAGE",
     REMOVE_IMAGE: "REMOVE_IMAGE",
@@ -41,6 +42,7 @@ const ResourcesOptionsPopupComponent = (props) => {
 
     const optionsMap = [
         { option: OPTIONS_MAP.ADD_IMAGE, label: "Add Image", isAvailable: () => true },
+        { option: OPTIONS_MAP.ADD_JSON, label: "Add JSON", isAvailable: () => true },
         { option: OPTIONS_MAP.DOWNLOAD_IMAGE, label: "Download Image", isAvailable: canShowDownloadOption },
         { option: OPTIONS_MAP.REPLACE_IMAGE, label: "Replace Image", isAvailable: canShowRemoveOption },
         { option: OPTIONS_MAP.REMOVE_IMAGE, label: "Remove Image", className: "remove-option", isAvailable: canShowRemoveOption },
@@ -65,6 +67,18 @@ const ResourcesOptionsPopupComponent = (props) => {
                 });
             };
             const imageLoaderElement = createImagesLoader(onImagesLoaded);
+            imageLoaderElement.click();
+            return;
+        }
+
+        if (option && option === OPTIONS_MAP.ADD_JSON) {
+            const onJSONLoaded = (files) => {
+                pixiLoader.loadAssets(files, () => {
+                    const data = files.map((file) => ({ id: getUID(), file }));
+                    props.addResourceAction(data);
+                });
+            };
+            const imageLoaderElement = createJSONLoader(onJSONLoaded);
             imageLoaderElement.click();
             return;
         }

@@ -9,6 +9,7 @@ import { importSpritePropertiesAction } from "../../store/properties/sprite";
 import { importNineSliceSpritePropertiesAction } from "../../store/properties/nineSliceSprite";
 import { importGraphicsPropertiesAction } from "../../store/properties/graphics";
 import { importTextPropertiesAction } from "../../store/properties/text";
+import { importSpinePropertiesAction } from "../../store/properties/spine";
 import { importResourcesAction } from "../../store/resources";
 import { importTreeDataAction } from "../../store/tree";
 import { importData } from "./features/importLogic";
@@ -26,6 +27,7 @@ import { createNewProject, exportDataAndCreateNew } from "./features/createNewPr
  * importNineSliceSpritePropertiesAction: typeof importNineSliceSpritePropertiesAction;
  * importGraphicsPropertiesAction: typeof importGraphicsPropertiesAction;
  * importTextPropertiesAction: typeof importTextPropertiesAction;
+ * importSpinePropertiesAction: typeof importSpinePropertiesAction; 
  * }} HeaderComponentDependencies
  */
 

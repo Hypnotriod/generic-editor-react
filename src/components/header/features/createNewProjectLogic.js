@@ -21,6 +21,7 @@ export const createNewProject = (actions) => {
         nineSliceSpritePropertiesList: data.properties.nineSliceSprite,
         graphicsList: data.properties.graphics,
         textPropertiesList: data.properties.text,
+        spinePropertiesList: data.properties.spine,
     }, actions);
     actions.importResourcesAction({});
 };

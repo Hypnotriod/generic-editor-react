@@ -21,6 +21,7 @@ export const defaultStoreData = {
         sprite: {},
         nineSliceSprite: {},
         graphics: {},
-        text: {}
+        text: {},
+        spine: {},
     }
 }

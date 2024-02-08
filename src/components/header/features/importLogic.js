@@ -18,6 +18,7 @@ export const importMainDataInStrictOrder = (data, actions) => {
     actions.importNineSliceSpritePropertiesAction(data.nineSliceSpritePropertiesList);
     actions.importGraphicsPropertiesAction(data.graphicsList);
     actions.importTextPropertiesAction(data.textPropertiesList);
+    actions.importSpinePropertiesAction(data.spinePropertiesList);
     actions.importTreeDataAction(data.treeData);
 };
 

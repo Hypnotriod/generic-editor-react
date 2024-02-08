@@ -13,6 +13,7 @@ import { round } from "lodash";
  * nineSliceSpritePropertiesList: import("../../../store/properties/nineSliceSprite").INineSliceSpritePropertiesListState;
  * graphicsList: import("../../../store/properties/graphics").IGraphicsPropertiesListState;
  * textPropertiesList: import("../../../store/properties/text").ITextPropertiesListState;
+ * spinePropertiesList: import("../../../store/properties/sprite").ISpinePropertiesListState;
  * entityTypesList: import("../../../store/entityTypes").IEntityTypesListState;
  * resourcesList: import("../../../store/resources").IResourcesListState;
  * updateBasePropertiesAction: typeof updateBasePropertiesAction;
@@ -96,7 +97,8 @@ const mapStateToProps = (store) => {
         entityTypesList: store.entityTypesList,
         resourcesList: store.resourcesList,
         graphicsList: store.graphicsList,
-        textPropertiesList: store.textPropertiesList
+        textPropertiesList: store.textPropertiesList,
+        spinePropertiesList: store.spinePropertiesList,
     }
 };
 
