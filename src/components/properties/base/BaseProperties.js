@@ -5,6 +5,7 @@ import { updateBasePropertiesAction } from "../../../store/properties/base";
 
 import { ROOT_NODE_ID } from "../../../data/StoreData";
 import { NumberInput, PointInput } from "../genericInputs";
+import { ToggleInput } from "../genericInputs/ToggleInput";
 
 
 /**
@@ -29,6 +30,10 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
             nodeID,
             properties: { ...baseProperty, [key]: value }
         });
+    };
+
+    const onVisibilityToggled = (key, visible) => {
+        onChange("visible", visible);
     };
 
     const positionData = {
@@ -65,6 +70,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
 
     return (
         <div className="properties propertiesTopOffset">
+            <ToggleInput {...{ label: "Visible", dataID: "", value: baseProperty.visible, onChange: onVisibilityToggled }} />
             {nodeID === ROOT_NODE_ID && <PointInput {...gridData} />}
             <PointInput {...positionData} />
             <PointInput {...scaleData} />

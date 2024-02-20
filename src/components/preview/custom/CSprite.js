@@ -9,6 +9,7 @@ export const behavior = {
 
         instance.texture = newProps.texture;
 
+        instance.visible = newProps.visible;
         instance.position.set(newProps.positionX, newProps.positionY);
         instance.scale.set(newProps.scaleX, newProps.scaleY);
         instance.anchor.set(newProps.anchorX, newProps.anchorY);

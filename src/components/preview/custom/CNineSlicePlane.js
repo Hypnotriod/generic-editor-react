@@ -28,6 +28,7 @@ export const behavior = {
 
         instance.nineSlicePlane.pivot.set(newProps.anchorX * newProps.width, newProps.anchorY * newProps.height);
 
+        instance.visible = newProps.visible;
         instance.position.set(newProps.positionX, newProps.positionY);
         instance.scale.set(newProps.scaleX, newProps.scaleY);
         instance.rotation = toRadians(newProps.rotation);

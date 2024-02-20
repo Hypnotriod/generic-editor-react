@@ -39,6 +39,7 @@ export const getEntityType = (type, components = []) => {
 
 /**
  * @typedef {{
+ * visible: boolean;
  * positionX: number;
  * positionY: number;
  * scaleX: number;
@@ -54,6 +55,7 @@ export const getEntityType = (type, components = []) => {
  */
 export const getBaseProperties = () => {
     return {
+        visible: true,
         positionX: 0,
         positionY: 0,
         scaleX: 1,

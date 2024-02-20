@@ -48,7 +48,7 @@ export const PreviewPanelComponent = ({ basePropertiesList, services }) => {
     }, []);
 
     return (
-        <CContainer {...{ id: "CameraContainer", rotation: 0, ...cameraData }}>
+        <CContainer {...{ id: "CameraContainer", rotation: 0, visible: true, ...cameraData }}>
             <CGrid id="CGrid"
                 cellSize={basePropertiesList[ROOT_NODE_ID].cellSize}
                 gridSize={basePropertiesList[ROOT_NODE_ID].gridSize}

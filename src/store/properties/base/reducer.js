@@ -1,5 +1,4 @@
 import { defaultStoreData } from "../../../data/DefaultStoreData";
-import { mockStoreData } from "../../../data/MockStreData";
 import { getBaseProperties } from "../../../data/StoreData";
 import { BASE_PROPERTIES_ACTIONS } from "./actionTypes";
 
@@ -50,6 +49,9 @@ export const basePropertiesListReducer = (state = STATE, { type, payload }) => {
     }
 
     else if (type === BASE_PROPERTIES_ACTIONS.IMPORT_BASE_PROPERTIES) {
+        Object.keys(payload).forEach(k => {
+            payload[k].visible = payload[k].visible !== undefined ? payload[k].visible : true;
+        });
         return { ...payload }
     }
     else {
