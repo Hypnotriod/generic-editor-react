@@ -53,7 +53,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
     };
 
     const gridData = {
-        label: "Grid Props",
+        label: "Grid Size",
         dataIDs: ["cellSize", "gridSize"],
         values: [baseProperty.cellSize, baseProperty.gridSize],
         signs: ["Cell", "Grid"],
