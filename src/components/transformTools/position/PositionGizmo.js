@@ -66,11 +66,11 @@ const PositionGizmoComponent = ({ services, selectedNodeID, updateBaseProperties
         services.gizmoPositionArrows.setElementRotation(element.rotation);
 
         services.gizmoPositionArrows.onMoved((dx, dy) => {
-            const offset = services.camera.applyScale({ x: dx, y: dy });
+            const offset = services.camera.applyScale({ x: round(dx), y: round(dy) });
 
             const properties = { ...basePropertiesList[selectedNodeID] };
-            properties.positionX = round(properties.positionX + offset.x, 2);
-            properties.positionY = round(properties.positionY + offset.y, 2);
+            properties.positionX = round(properties.positionX + offset.x);
+            properties.positionY = round(properties.positionY + offset.y);
 
             updateBasePropertiesAction({ nodeID: selectedNodeID, properties });
         });
