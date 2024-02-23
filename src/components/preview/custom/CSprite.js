@@ -1,6 +1,6 @@
 
 import { CustomPIXIComponent } from "react-pixi-fiber";
-import { Sprite } from "pixi.js";
+import { Sprite, Rectangle } from "pixi.js";
 import { toRadians } from "../../../tools/math";
 
 export const behavior = {
@@ -15,6 +15,13 @@ export const behavior = {
         instance.anchor.set(newProps.anchorX, newProps.anchorY);
         instance.rotation = toRadians(newProps.rotation);
         instance.name = String(newProps.id);
+
+        if (!instance.interactive) {
+            instance.interactive = true;
+            instance.on("mousedown", () => {
+                newProps.onSelect(newProps.id);
+            }, this);
+        }
     }
 };
 export const CSprite = CustomPIXIComponent(behavior, "CSprite");

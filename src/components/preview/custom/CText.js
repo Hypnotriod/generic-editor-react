@@ -23,6 +23,13 @@ export const behavior = {
         instance.anchor.set(anchorX, anchorY);
         instance.rotation = toRadians(baseProps.rotation);
         instance.name = String(newProps.id);
+
+        if (!instance.interactive) {
+            instance.interactive = true;
+            instance.on("mousedown", () => {
+                newProps.onSelect(newProps.id);
+            }, this);
+        }
     }
 };
 export const CText = CustomPIXIComponent(behavior, "CText");

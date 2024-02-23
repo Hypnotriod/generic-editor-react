@@ -17,7 +17,7 @@ import { CText } from "./CText";
  * @param {import("../../../store/resources").IResourcesListState} resourcesList
  * @param {import("../../../store/properties/graphics").IGraphicsPropertiesListState} graphicsList
  */
-export const createPixiTree = (nodeData, dependencies) => {
+export const createPixiTree = (nodeData, dependencies, onSelect) => {
     const {
         basePropertiesList,
         spritePropertiesList,
@@ -33,9 +33,9 @@ export const createPixiTree = (nodeData, dependencies) => {
 
     if (entity.type === ENTITY_TYPES.CONTAINER) {
         return (
-            <CContainer key={nodeData.id} id={nodeData.id} {...baseProps}>
-                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
-            </CContainer>
+            <CContainer key={nodeData.id} id={nodeData.id} {...{ onSelect, ...baseProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies, onSelect))}
+            </CContainer >
         );
     }
     if (entity.type === ENTITY_TYPES.SPRITE) {
@@ -44,16 +44,16 @@ export const createPixiTree = (nodeData, dependencies) => {
         const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
 
         return (
-            <CSprite key={nodeData.id} id={nodeData.id} {...{ texture, ...baseProps, ...spriteProps }}>
-                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
+            <CSprite key={nodeData.id} id={nodeData.id} {...{ texture, onSelect, ...baseProps, ...spriteProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies, onSelect))}
             </CSprite>
         );
     }
     if (entity.type === ENTITY_TYPES.GRAPHICS) {
         const graphicsProps = graphicsList[nodeData.id];
         return (
-            <CGraphics key={nodeData.id} id={nodeData.id} {...{ ...baseProps, ...graphicsProps }}>
-                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
+            <CGraphics key={nodeData.id} id={nodeData.id} {...{ onSelect, ...baseProps, ...graphicsProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies, onSelect))}
             </CGraphics>
         );
     }
@@ -63,8 +63,8 @@ export const createPixiTree = (nodeData, dependencies) => {
         const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
 
         return (
-            <CNineSlicePlane key={nodeData.id} id={nodeData.id} {...{ texture, ...baseProps, ...nineSliceProps }}>
-                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
+            <CNineSlicePlane key={nodeData.id} id={nodeData.id} {...{ texture, onSelect, ...baseProps, ...nineSliceProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies, onSelect))}
             </CNineSlicePlane>
         );
     }
@@ -72,8 +72,8 @@ export const createPixiTree = (nodeData, dependencies) => {
         const textProps = textPropertiesList[nodeData.id];
 
         return (
-            <CText key={nodeData.id} id={nodeData.id} {...{ baseProps, textProps }}>
-                {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
+            <CText key={nodeData.id} id={nodeData.id} {...{ onSelect, baseProps, textProps }}>
+                {nodeData.nodes.map((node) => createPixiTree(node, dependencies, onSelect))}
             </CText>
         );
     }

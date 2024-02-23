@@ -33,6 +33,13 @@ export const behavior = {
         instance.scale.set(newProps.scaleX, newProps.scaleY);
         instance.rotation = toRadians(newProps.rotation);
         instance.name = String(newProps.id);
+
+        if (!instance.interactive) {
+            instance.interactive = true;
+            instance.on("mousedown", () => {
+                newProps.onSelect(newProps.id);
+            }, this);
+        }
     }
 };
 export const CNineSlicePlane = CustomPIXIComponent(behavior, "CNineSlicePlane");
