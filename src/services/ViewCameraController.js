@@ -72,6 +72,10 @@ export class ViewCameraController extends utils.EventEmitter {
         };
     };
 
+    getScale() {
+        return this._cameraScale;
+    }
+
     _update() {
         if (!this._needUpdate) {
             return;

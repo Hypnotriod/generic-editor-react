@@ -42,7 +42,7 @@ const ElementBoundsComponent = ({ services, selectedNodeID, updateBaseProperties
             const element = services.pixiTools.getChildByName(services.app.stage, String(selectedNodeID));
             services.elementBounds.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
             services.elementBounds.setRotation(services.pixiTools.getGlobalRotation(element));
-            services.elementBounds.adjustBounds(element);
+            services.elementBounds.adjustBounds(element, services.camera.getScale());
         };
 
         handleCameraUpdate();
@@ -58,7 +58,7 @@ const ElementBoundsComponent = ({ services, selectedNodeID, updateBaseProperties
         const element = services.pixiTools.getChildByName(services.app.stage, String(selectedNodeID));
         services.elementBounds.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
         services.elementBounds.setRotation(services.pixiTools.getGlobalRotation(element));
-        services.elementBounds.adjustBounds(element);
+        services.elementBounds.adjustBounds(element, services.camera.getScale());
         services.elementBounds.show();
     }
     else {

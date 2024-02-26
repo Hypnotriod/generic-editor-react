@@ -24,13 +24,13 @@ export class ViewElementBounds {
         this._bounds.rotation = angle;
     }
 
-    adjustBounds(element) {
+    adjustBounds(element, cameraScale) {
         this._bounds.clear();
 
         const x = element._localBoundsRect ? element._localBoundsRect.x : (element.anchor !== undefined ? -element.width * element.anchor.x : 0);
         const y = element._localBoundsRect ? element._localBoundsRect.y : (element.anchor !== undefined ? -element.width * element.anchor.y : 0);
-        const width = element.scale ? element.width * (element.scale.x < 0 && element.width > 0 ? -1 : 1) : element.width;
-        const height = element.scale ? element.height * (element.scale.y < 0 && element.height > 0 ? -1 : 1) : element.height;
+        const width = (element.scale ? element.width * (element.scale.x < 0 && element.width > 0 ? -1 : 1) : element.width) * cameraScale;
+        const height = (element.scale ? element.height * (element.scale.y < 0 && element.height > 0 ? -1 : 1) : element.height) * cameraScale;
 
         this._bounds.lineStyle(5, 0xff0000)
             .moveTo(x, y)
