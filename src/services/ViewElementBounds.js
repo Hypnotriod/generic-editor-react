@@ -32,7 +32,7 @@ export class ViewElementBounds {
         const width = (element.scale ? element.width * (element.scale.x < 0 && element.width > 0 ? -1 : 1) : element.width) * cameraScale;
         const height = (element.scale ? element.height * (element.scale.y < 0 && element.height > 0 ? -1 : 1) : element.height) * cameraScale;
 
-        this._bounds.lineStyle(5, 0xff0000)
+        this._bounds.lineStyle(3, 0xff0000)
             .moveTo(x, y)
             .lineTo(x + width, y)
             .lineTo(x + width, y + height)
