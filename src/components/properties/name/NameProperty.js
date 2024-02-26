@@ -40,8 +40,14 @@ const NamePropertyComponent = (props) => {
         setTimeout(() => nameInputRef.current.focus());
     }, [props.selectedNodeID]);
 
+    const type = props.entityTypesList[props.selectedNodeID].type;
+    const typeCapitalize = type[0] + type.slice(1).toLowerCase();
+
     return (
         <div className="properties">
+            <div className="flexRow">
+                <span className="textCenter colorGray widthFull">{typeCapitalize}</span>
+            </div>
             <TextInput ref={nameInputRef} {
                 ...{
                     label: "Name",
@@ -60,9 +66,10 @@ const NamePropertyComponent = (props) => {
 /**
  * @param {import("../../../store").IStore} data 
  */
-const mapStateToProps = ({ tree }) => {
+const mapStateToProps = ({ tree, entityTypesList }) => {
     return {
         treeData: tree.treeData,
+        entityTypesList: entityTypesList,
         selectedNodeID: tree.selectedNodeID
     }
 };
