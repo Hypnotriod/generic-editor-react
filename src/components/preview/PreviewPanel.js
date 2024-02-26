@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ROOT_NODE_ID } from "../../data/StoreData";
+import { setSelectedNodeIDAction } from "../../store/tree";
 import { MainScene } from "./MainScene";
 import { CContainer } from "./custom/CContainer";
 import { CGrid } from "./custom/CGrid";
 
-export const PreviewPanelComponent = ({ basePropertiesList, services }) => {
+export const PreviewPanelComponent = ({ basePropertiesList, setSelectedNodeIDAction, services }) => {
 
     const [cameraData, setCameraData] = useState({
         positionX: 0,
@@ -47,13 +48,16 @@ export const PreviewPanelComponent = ({ basePropertiesList, services }) => {
         }
     }, []);
 
+    const onSelect = (id) => setSelectedNodeIDAction(id);
+
     return (
         <CContainer {...{ id: "CameraContainer", rotation: 0, visible: true, ...cameraData }}>
             <CGrid id="CGrid"
                 cellSize={basePropertiesList[ROOT_NODE_ID].cellSize}
                 gridSize={basePropertiesList[ROOT_NODE_ID].gridSize}
                 color={0xc2c2c2}
-                lineWidth={2} />
+                lineWidth={2}
+                onSelect={onSelect} />
             <MainScene />
         </CContainer>
     );
@@ -66,5 +70,6 @@ const mapStateToProps = (store) => {
 };
 
 export const PreviewPanel = connect(
-    mapStateToProps, {}
+    mapStateToProps,
+    { setSelectedNodeIDAction }
 )(PreviewPanelComponent)
