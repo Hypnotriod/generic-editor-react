@@ -21,7 +21,6 @@ export const behavior = {
 
         instance.name = id;
         instance.position.set(-totalWidth / 2, -totalHeight / 2)
-        instance.cacheAsBitmap = false;
 
         let graphics = instance.getChildByName(GRID_GRAPHICS_DISPLAY_OBJECT_NAME);
         if (!graphics) {
@@ -59,8 +58,6 @@ export const behavior = {
         // rectangle around
         graphics.drawRect(0, 0, totalWidth, totalHeight);
         graphics.endFill();
-
-        instance.cacheAsBitmap = false;
     }
 };
 export const CGrid = CustomPIXIComponent(behavior, "CGrid");
