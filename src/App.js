@@ -16,6 +16,7 @@ import { ViewCameraController } from "./services/ViewCameraController";
 import { ViewResizeController } from "./services/ViewResizeController";
 // I have to copy it because the available npm packages incompatible with pixi 4.6.0 this project use 
 import { DOMGizmoButtons } from "./services/DOMGizmoButtons";
+import { ViewElementBounds } from "./services/ViewElementBounds";
 import { ViewGizmoPositionArrows } from "./services/ViewGizmoPositionArrows";
 import { ViewGizmoRotation } from "./services/ViewGizmoRotation";
 import { ViewGizmoScaleBox } from "./services/ViewGizmoScaleBox";
@@ -50,6 +51,7 @@ export const App = () => {
       app,
       camera: new ViewCameraController(app.view, app.ticker, { min: 1, max: 3 }),
       resize: new ViewResizeController(canvasContainerRef.current, app.renderer, { width: 1280, height: 1280 }),
+      elementBounds: new ViewElementBounds(),
       gizmoPositionArrows: new ViewGizmoPositionArrows(app.ticker),
       gizmoScaleBox: new ViewGizmoScaleBox(app.ticker),
       gizmoRotation: new ViewGizmoRotation(app.ticker),
