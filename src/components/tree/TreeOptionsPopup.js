@@ -151,6 +151,7 @@ const TreeOptionsPopupComponent = (props) => {
         if (option === OPTIONS_MAP.REMOVE_OPTION) {
             const entity = store.getState().entityTypesList[id];
             // these 3 are for any type of entity, so we will remove them at once
+            props.setSelectedNodeIDAction(null);
             props.deleteNodeAction(id);
             props.removeEntityAction(id);
             props.removeBasePropertiesAction(id);
