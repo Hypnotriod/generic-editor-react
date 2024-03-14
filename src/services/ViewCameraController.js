@@ -150,10 +150,11 @@ export class ViewCameraController extends utils.EventEmitter {
         const zoomDirection = Math.sign(event.wheelDelta);
 
         const previousCameraScale = this._cameraScale;
-        const rect = this._canvas.getBoundingClientRect()
-        const mousePosition = { x: event.x - rect.left - rect.width / 2, y: event.y - rect.top - rect.height / 2 };
-        const scl = this._cameraScale + (ZOOM_SPEED * zoomDirection);
-        this._cameraScale = clamp(scl, this._scale.min, this._scale.max);
+        const canvasRect = this._canvas.getBoundingClientRect()
+        const mousePosition = { x: event.x - canvasRect.left - canvasRect.width / 2, y: event.y - canvasRect.top - canvasRect.height / 2 };
+        const newScale = this._cameraScale + (ZOOM_SPEED * zoomDirection);
+
+        this._cameraScale = clamp(newScale, this._scale.min, this._scale.max);
         const scaleDiff = previousCameraScale - this._cameraScale;
         this._cameraPosition.x -= this._cameraPosition.x * scaleDiff / this._cameraScale - mousePosition.x * scaleDiff;
         this._cameraPosition.y -= this._cameraPosition.y * scaleDiff / this._cameraScale - mousePosition.y * scaleDiff;
