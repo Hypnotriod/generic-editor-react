@@ -49,7 +49,7 @@ export const App = () => {
 
     setServices({
       app,
-      camera: new ViewCameraController(app.view, app.ticker, { min: 0.25, max: 4 }),
+      camera: new ViewCameraController(app.view, app.ticker, { min: 1 / 8, max: 8 }),
       resize: new ViewResizeController(canvasContainerRef.current, app.renderer, { width: 1280, height: 1280 }),
       elementBounds: new ViewElementBounds(),
       gizmoPositionArrows: new ViewGizmoPositionArrows(app.ticker),
