@@ -9,6 +9,30 @@
                 "run-script",
                 "start"
             ],
+            "options": {
+                "env": {
+                    "NODE_OPTIONS": "--openssl-legacy-provider"
+                }
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run-script",
+                "build"
+            ],
+            "options": {
+                "env": {
+                    "NODE_OPTIONS": "--openssl-legacy-provider"
+                }
+            },
             "problemMatcher": [],
             "group": {
                 "kind": "build",
