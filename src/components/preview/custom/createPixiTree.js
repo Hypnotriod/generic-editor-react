@@ -55,10 +55,10 @@ export const createPixiTree = (nodeData, dependencies, onSelect) => {
     if (entity.type === ENTITY_TYPES.SPINE) {
         const spineProps = spinePropertiesList[nodeData.id];
         const resource = resourcesList[spineProps.resourceID];
-        const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
+        const spineData = resource ? resource.spineData : undefined;
 
         return (
-            <CSpine key={nodeData.id} id={nodeData.id} {...{ texture, ...baseProps, ...spineProps }}>
+            <CSpine key={nodeData.id} id={nodeData.id} {...{ spineData, ...baseProps, ...spineProps }}>
                 {nodeData.nodes.map((node) => createPixiTree(node, dependencies))}
             </CSpine>
         );

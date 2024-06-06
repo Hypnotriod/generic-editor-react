@@ -1,6 +1,7 @@
 
 import { CustomPIXIComponent } from "react-pixi-fiber";
-// import { Spine } from "pixi-spine";
+import * as PIXI from 'pixi.js'
+import "pixi-spine";
 import { Sprite } from "pixi.js";
 import { toRadians } from "../../../tools/math";
 
@@ -11,8 +12,8 @@ export const behavior = {
     customApplyProps: (instance, oldProps, newProps) => {
 
         let spine = instance.getChildByName(SPINE_DISPLAY_OBJECT_NAME);
-        if (!spine && newProps.resourceName) {
-            // spine = new Spine()
+        if (!spine && newProps.spineData) {
+            spine = new PIXI.spine.Spine(newProps.spineData);
         }
 
         // instance.texture = newProps.texture;
