@@ -13,7 +13,6 @@ import { round } from "lodash";
  * nineSliceSpritePropertiesList: import("../../../store/properties/nineSliceSprite").INineSliceSpritePropertiesListState;
  * graphicsList: import("../../../store/properties/graphics").IGraphicsPropertiesListState;
  * textPropertiesList: import("../../../store/properties/text").ITextPropertiesListState;
- * spinePropertiesList: import("../../../store/properties/spine").ISpinePropertiesListState;
  * entityTypesList: import("../../../store/entityTypes").IEntityTypesListState;
  * resourcesList: import("../../../store/resources").IResourcesListState;
  * updateBasePropertiesAction: typeof updateBasePropertiesAction;
@@ -25,14 +24,12 @@ import { round } from "lodash";
 /**
  * @param {PositionGizmoComponentDependencies} props 
  */
-const PositionGizmoComponent = ({ services, selectedNodeID, updateBasePropertiesAction, basePropertiesList }) => {
+const ElementBoundsComponent = ({ services, selectedNodeID, updateBasePropertiesAction, basePropertiesList }) => {
 
     useEffect(() => {
-        services.app.stage.addChild(services.gizmoPositionArrows.view);
-        services.gizmoPositionArrows.activate();
+        services.app.stage.addChild(services.elementBounds.view);
         return () => {
-            services.app.stage.removeChild(services.gizmoPositionArrows.view);
-            services.gizmoPositionArrows.deactivate();
+            services.app.stage.removeChild(services.elementBounds.view);
         };
     }, []);
 
@@ -43,9 +40,9 @@ const PositionGizmoComponent = ({ services, selectedNodeID, updateBaseProperties
 
         const handleCameraUpdate = () => {
             const element = services.pixiTools.getChildByName(services.app.stage, String(selectedNodeID));
-            services.gizmoPositionArrows.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
-            services.gizmoPositionArrows.setRotation(services.pixiTools.getGlobalRotation(element));
-            services.gizmoPositionArrows.setElementRotation(element.rotation);
+            services.elementBounds.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
+            services.elementBounds.setRotation(services.pixiTools.getGlobalRotation(element));
+            services.elementBounds.adjustBounds(element, services.camera.getScale());
         };
 
         handleCameraUpdate();
@@ -58,27 +55,14 @@ const PositionGizmoComponent = ({ services, selectedNodeID, updateBaseProperties
 
 
     if (selectedNodeID) {
-
         const element = services.pixiTools.getChildByName(services.app.stage, String(selectedNodeID));
-
-        services.gizmoPositionArrows.show();
-        services.gizmoPositionArrows.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
-        services.gizmoPositionArrows.setRotation(services.pixiTools.getGlobalRotation(element));
-        services.gizmoPositionArrows.setElementRotation(element.rotation);
-
-        services.gizmoPositionArrows.onMoved((dx, dy) => {
-            const offset = services.camera.applyScale({ x: round(dx), y: round(dy) });
-
-            const properties = { ...basePropertiesList[selectedNodeID] };
-            properties.positionX = round(properties.positionX + offset.x);
-            properties.positionY = round(properties.positionY + offset.y);
-
-            updateBasePropertiesAction({ nodeID: selectedNodeID, properties });
-        });
+        services.elementBounds.setPosition(services.pixiTools.getChildRelativePosition(element, services.app.stage));
+        services.elementBounds.setRotation(services.pixiTools.getGlobalRotation(element));
+        services.elementBounds.adjustBounds(element, services.camera.getScale());
+        services.elementBounds.show();
     }
     else {
-        services.gizmoPositionArrows.hide();
-        services.gizmoPositionArrows.onMoved(null);
+        services.elementBounds.hide();
     }
 
     return (
@@ -99,13 +83,12 @@ const mapStateToProps = (store) => {
         entityTypesList: store.entityTypesList,
         resourcesList: store.resourcesList,
         graphicsList: store.graphicsList,
-        textPropertiesList: store.textPropertiesList,
-        spinePropertiesList: store.spinePropertiesList,
+        textPropertiesList: store.textPropertiesList
     }
 };
 
 
-export const PositionGizmo = connect(
+export const ElementBounds = connect(
     mapStateToProps,
     { updateBasePropertiesAction }
-)(PositionGizmoComponent)
+)(ElementBoundsComponent)

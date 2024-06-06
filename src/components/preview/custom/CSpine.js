@@ -1,6 +1,6 @@
 
 import { CustomPIXIComponent } from "react-pixi-fiber";
-import { Spine } from "pixi-spine";
+// import { Spine } from "pixi-spine";
 import { Sprite } from "pixi.js";
 import { toRadians } from "../../../tools/math";
 

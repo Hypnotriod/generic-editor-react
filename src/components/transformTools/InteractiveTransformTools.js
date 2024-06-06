@@ -6,6 +6,7 @@ import { PositionGizmo } from "./position";
 import { ScaleGizmo } from "./scale";
 import { DOM_GIZMO_BUTTON_TYPES } from "../../services/DOMGizmoButtons";
 import { RotationGizmo } from "./rotation";
+import { ElementBounds } from "./bounds";
 
 
 const METHODS_TO_GIZMO_MAP = {
@@ -36,6 +37,7 @@ export const InteractiveTransformTools = (props) => {
               `Could not find "store" in the context of "Connect(PositionGizmo)". something something
           */
         <Provider store={store}>
+            <ElementBounds services={props.services}></ElementBounds>
             {
                 METHODS_TO_GIZMO_MAP[transformMethod] && METHODS_TO_GIZMO_MAP[transformMethod](props)
             }

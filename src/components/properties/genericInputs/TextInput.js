@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
 
 
 /**
@@ -16,7 +16,7 @@ import React from "react";
 /**
  * @param {TextInputDependencies} props
  */
-export const TextInput = ({
+export const TextInput = forwardRef(({
     label,
     value,
     onChange,
@@ -24,7 +24,15 @@ export const TextInput = ({
     className = "",
     onBlur = (e) => e,
     middleware = (e) => e
-}) => {
+}, ref) => {
+    const inputRef = useRef();
+
+    useImperativeHandle(ref, () => ({
+        focus() {
+            inputRef.current.focus();
+            inputRef.current.select();
+        },
+    }));
 
     const onInputChange = (event) => {
         event = middleware(event);
@@ -35,6 +43,7 @@ export const TextInput = ({
         <div className="flexRow">
             <span className="textLeft colorGray widthOneThird">{label}</span>
             <input
+                ref={inputRef}
                 className={`widthTwoThird ${className}`}
                 type="text"
                 data-id={dataID}
@@ -44,4 +53,4 @@ export const TextInput = ({
             />
         </div>
     );
-}
+});

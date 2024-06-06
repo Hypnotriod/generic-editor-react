@@ -27,7 +27,7 @@ const FILE_NAMES = {
 const collectUsedResources = (data, resourcesList) => {
     return Object.values(data)
         .reduce((acc, { resourceID }) => {
-            if (resourceID) { acc.push([resourceID, resourcesList[resourceID]]) }
+            if (resourceID && resourcesList[resourceID]) { acc.push([resourceID, resourcesList[resourceID]]) }
             return acc;
         }, []);
 }

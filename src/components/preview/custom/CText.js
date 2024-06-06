@@ -17,11 +17,19 @@ export const behavior = {
         instance.text = text;
         instance.style = style;
 
+        instance.visible = baseProps.visible;
         instance.position.set(baseProps.positionX, baseProps.positionY);
         instance.scale.set(baseProps.scaleX, baseProps.scaleY);
         instance.anchor.set(anchorX, anchorY);
         instance.rotation = toRadians(baseProps.rotation);
         instance.name = String(newProps.id);
+
+        if (!instance.interactive) {
+            instance.interactive = true;
+            instance.on("mousedown", () => {
+                newProps.onSelect(newProps.id);
+            }, this);
+        }
     }
 };
 export const CText = CustomPIXIComponent(behavior, "CText");

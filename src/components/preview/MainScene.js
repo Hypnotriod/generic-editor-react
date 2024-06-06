@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { setSelectedNodeIDAction } from "../../store/tree";
 import { createPixiTree } from "./custom/createPixiTree";
 
 /**
@@ -19,10 +20,11 @@ import { createPixiTree } from "./custom/createPixiTree";
 /**
  * @param { MainSceneComponentDependencies} props 
  */
-const MainSceneComponent = ({ treeData, ...dependencies }) => {
+const MainSceneComponent = ({ treeData, setSelectedNodeIDAction, ...dependencies }) => {
+    const onSelect = (id) => setSelectedNodeIDAction(id);
     return (
         <>
-            {treeData ? createPixiTree(treeData, dependencies) : null}
+            {treeData ? createPixiTree(treeData, dependencies, onSelect) : null}
         </>
     );
 };
@@ -45,5 +47,6 @@ const mapStateToProps = (store) => {
 };
 
 export const MainScene = connect(
-    mapStateToProps, {}
+    mapStateToProps,
+    { setSelectedNodeIDAction }
 )(MainSceneComponent)

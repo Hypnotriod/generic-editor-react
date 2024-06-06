@@ -12,7 +12,7 @@ import { initNineSliceSpritePropertiesAction, removeNineSliceSpritePropertiesAct
 import { initSpritePropertiesAction, removeSpritePropertiesAction, updateSpritePropertiesAction } from "../../store/properties/sprite";
 import { initTextPropertiesAction, removeTextPropertiesAction, updateTextPropertiesAction } from "../../store/properties/text";
 import { initSpinePropertiesAction, removeSpinePropertiesAction, updateSpinePropertiesAction } from "../../store/properties/spine";
-import { createNodeAction, deleteNodeAction, updateNodeNameAction, setCopyNodeIDAction } from "../../store/tree";
+import { createNodeAction, deleteNodeAction, updateNodeNameAction, setCopyNodeIDAction, setSelectedNodeIDAction } from "../../store/tree";
 import { getNodeByID, getParent } from "../../tools/treeTools";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
@@ -30,6 +30,7 @@ const OPTIONS_MAP = {
  * createNodeAction: typeof createNodeAction;
  * updateNodeNameAction: typeof updateNodeNameAction;
  * deleteNodeAction: typeof deleteNodeAction;
+ * setSelectedNodeIDAction: typeof setSelectedNodeIDAction;
  * initEntityAction: typeof  initEntityAction;
  * removeEntityAction: typeof  removeEntityAction;
  * initBasePropertiesAction: typeof  initBasePropertiesAction;
@@ -151,6 +152,7 @@ const TreeOptionsPopupComponent = (props) => {
         props.createNodeAction(parentNodeId, newID);
         props.updateNodeNameAction({ nodeID: newID, name: node.name });
         node.nodes.forEach(n => cloneNode(n, newID, undefined, newNodeIds));
+        return newID;
     }
 
     const processClick = (event, hoveredElement) => {
@@ -160,6 +162,7 @@ const TreeOptionsPopupComponent = (props) => {
         if (option === OPTIONS_MAP.REMOVE_OPTION) {
             const entity = store.getState().entityTypesList[id];
             // these 3 are for any type of entity, so we will remove them at once
+            props.setSelectedNodeIDAction(null);
             props.deleteNodeAction(id);
             props.removeEntityAction(id);
             props.removeBasePropertiesAction(id);
@@ -177,7 +180,8 @@ const TreeOptionsPopupComponent = (props) => {
             const treeData = store.getState().tree.treeData;
             const node = getNodeByID(id, treeData);
             const parentNode = getParent(node.id, treeData);
-            cloneNode(node, parentNode.id, { x: 10, y: -10 });
+            const newID = cloneNode(node, parentNode.id, { x: 10, y: -10 });
+            props.setSelectedNodeIDAction(newID);
             return;
         }
 
@@ -189,8 +193,9 @@ const TreeOptionsPopupComponent = (props) => {
         if (option === OPTIONS_MAP.PASTE_OPTION) {
             const treeData = store.getState().tree.treeData;
             const node = getNodeByID(store.getState().tree.copyNodeID, treeData);
-            cloneNode(node, id, { x: 0, y: 0 });
+            const newID = cloneNode(node, id, { x: 0, y: 0 });
             props.setCopyNodeIDAction(null);
+            props.setSelectedNodeIDAction(newID);
             return;
         }
 
@@ -227,6 +232,7 @@ const TreeOptionsPopupComponent = (props) => {
         // because PreviewPanel will add new UI when a node is added
         // but it will throw error if the properties for that node doesn't exist yet
         props.createNodeAction(id, newID);
+        props.setSelectedNodeIDAction(newID);
     };
 
     return (
@@ -250,6 +256,7 @@ export const TreeOptionsPopup = connect(
         createNodeAction,
         updateNodeNameAction,
         setCopyNodeIDAction,
+        setSelectedNodeIDAction,
         deleteNodeAction,
         initEntityAction,
         removeEntityAction,

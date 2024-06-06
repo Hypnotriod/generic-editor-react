@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import { connect } from "react-redux";
 import { updateNodeNameAction } from "../../../store/tree";
 import { getNodeByID } from "../../../tools/treeTools";
 
-import "./nameProperty.css";
 import { TextInput } from "../genericInputs/TextInput";
+import "./nameProperty.css";
 
 const INVALID_NAME = "No name";
 
@@ -21,6 +21,7 @@ const INVALID_NAME = "No name";
 const NamePropertyComponent = (props) => {
     const node = getNodeByID(props.selectedNodeID, props.treeData);
     const isInvalid = (node.name.length === 0) || (node.name === INVALID_NAME);
+    const nameInputRef = useRef();
 
     // update the name value of the selected node
     const onChange = (key, value) => {
@@ -35,14 +36,25 @@ const NamePropertyComponent = (props) => {
         props.updateNodeNameAction({ nodeID: props.selectedNodeID, name: value });
     };
 
+    useEffect(() => {
+        setTimeout(() => nameInputRef.current.focus());
+    }, [props.selectedNodeID]);
+
+    const type = props.entityTypesList[props.selectedNodeID].type;
+    const typeCapitalize = type[0] + type.slice(1).toLowerCase();
+
     return (
         <div className="properties">
-            <TextInput {
+            <div className="flexRow">
+                <span className="textCenter colorGray widthFull">{typeCapitalize}</span>
+            </div>
+            <TextInput ref={nameInputRef} {
                 ...{
                     label: "Name",
                     dataID: "name",
                     value: node.name,
                     className: isInvalid ? "invalidName" : "",
+                    inputRef: nameInputRef,
                     onChange,
                     onBlur
                 }
@@ -54,9 +66,10 @@ const NamePropertyComponent = (props) => {
 /**
  * @param {import("../../../store").IStore} data 
  */
-const mapStateToProps = ({ tree }) => {
+const mapStateToProps = ({ tree, entityTypesList }) => {
     return {
         treeData: tree.treeData,
+        entityTypesList: entityTypesList,
         selectedNodeID: tree.selectedNodeID
     }
 };

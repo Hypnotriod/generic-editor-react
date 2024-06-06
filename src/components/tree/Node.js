@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ENTITY_TYPES } from "../../data/StoreData";
 import store from "../../store";
 import "./node.css";
@@ -29,6 +29,16 @@ const ICONS_TO_ENTITIES_MAP = {
  */
 export const Node = ({ node, selectedNodeID, copyNodeID }) => {
     const [collapsed, setCollapsed] = useState(true);
+
+    const includesSelectedNodeID = (nodes, id) => {
+        return nodes.some(n => n.id === id || n.nodes.length > 0 && includesSelectedNodeID(n.nodes, id));
+    }
+
+    useEffect(() => {
+        if (includesSelectedNodeID(node.nodes, selectedNodeID)) {
+            setCollapsed(false);
+        }
+    }, [selectedNodeID]);
 
     const nodesList = <div className="node-nodes">
         {node.nodes.map(node => <Node key={node.id} node={node} selectedNodeID={selectedNodeID} copyNodeID={copyNodeID} />)}

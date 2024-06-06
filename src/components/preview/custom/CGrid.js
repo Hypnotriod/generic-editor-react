@@ -1,5 +1,5 @@
 
-import { Container, Graphics } from "pixi.js";
+import { Container, Graphics, Rectangle } from "pixi.js";
 import { CustomPIXIComponent } from "react-pixi-fiber";
 
 export const DEFAULT_CELL_SIZE = 50;
@@ -8,7 +8,7 @@ export const GRID_GRAPHICS_DISPLAY_OBJECT_NAME = '__grid_graphics';
 
 export const behavior = {
     customDisplayObject: () => new Container(),
-    customApplyProps: (instance, _, { id, cellSize, gridSize, color, lineWidth }) => {
+    customApplyProps: (instance, _, { id, cellSize, gridSize, color, lineWidth, onSelect }) => {
 
         // cellSize size of each square in the grid
         // gridSize the length of a side of the square
@@ -21,7 +21,6 @@ export const behavior = {
 
         instance.name = id;
         instance.position.set(-totalWidth / 2, -totalHeight / 2)
-        instance.cacheAsBitmap = false;
 
         let graphics = instance.getChildByName(GRID_GRAPHICS_DISPLAY_OBJECT_NAME);
         if (!graphics) {
@@ -60,7 +59,13 @@ export const behavior = {
         graphics.drawRect(0, 0, totalWidth, totalHeight);
         graphics.endFill();
 
-        instance.cacheAsBitmap = false;
+        if (!graphics.interactive) {
+            graphics.hitArea = new Rectangle(-Number.MAX_SAFE_INTEGER / 2, -Number.MAX_SAFE_INTEGER / 2, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+            graphics.interactive = true;
+            graphics.on("mousedown", () => {
+                onSelect(null);
+            }, this);
+        }
     }
 };
 export const CGrid = CustomPIXIComponent(behavior, "CGrid");

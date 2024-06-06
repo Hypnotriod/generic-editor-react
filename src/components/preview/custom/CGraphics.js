@@ -25,10 +25,18 @@ export const behavior = {
         }
         instance.endFill();
 
+        instance.visible = newProps.visible;
         instance.position.set(newProps.positionX, newProps.positionY);
         instance.scale.set(newProps.scaleX, newProps.scaleY);
         instance.rotation = toRadians(newProps.rotation);
         instance.name = String(newProps.id);
+
+        if (!instance.interactive) {
+            instance.interactive = true;
+            instance.on("mousedown", () => {
+                newProps.onSelect(newProps.id);
+            }, this);
+        }
     }
 };
 export const CGraphics = CustomPIXIComponent(behavior, "CGraphics");

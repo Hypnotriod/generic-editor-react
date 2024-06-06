@@ -11,11 +11,15 @@
 }
 
 .textLeft {
-    text-align:left;
+    text-align: left;
 }
 
 .textRight {
     text-align: right;
+}
+
+.textCenter {
+    text-align: center;
 }
 
 .colorWhite {
@@ -51,7 +55,8 @@ span {
     white-space: nowrap;
 }
 
-textarea, input { 
+textarea,
+input {
     border: none;
     border-color: transparent;
     outline: none;
@@ -73,14 +78,14 @@ select {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type=number] {
-  -moz-appearance: textfield;
-  appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 textarea::-webkit-scrollbar {
@@ -104,6 +109,7 @@ input[type="color"] {
 input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
 }
+
 input[type="color"]::-webkit-color-swatch {
     border: none;
 }

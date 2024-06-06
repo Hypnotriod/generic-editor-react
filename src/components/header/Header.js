@@ -49,7 +49,7 @@ export const HeaderComponent = (props) => {
                     <span onClick={() => exportData(store, undefined)}>Export Files</span>
                     <span>
                         <span onClick={() => exportData(store, inputExportAs.current.value)}>Export Files As</span>
-                        <input type="text" ref={inputExportAs} style={{backgroundColor: "black"}}></input>
+                        <input type="text" ref={inputExportAs} style={{ backgroundColor: "black" }}></input>
                     </span>
                 </div>
             </div>
@@ -89,6 +89,7 @@ export const Header = connect(
         importTreeDataAction,
         importNineSliceSpritePropertiesAction,
         importGraphicsPropertiesAction,
-        importTextPropertiesAction
+        importTextPropertiesAction,
+        importSpinePropertiesAction,
     }
 )(HeaderComponent)

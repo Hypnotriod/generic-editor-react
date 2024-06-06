@@ -23,9 +23,9 @@
     "deploy": "gh-pages -d build",
     "fixPathForGHPages": "node ./fixPathForGHPages.js",
     "createVersionFile": "node ./createVersionFile.js",
-    "start": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-app-rewired start",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider && npm run createVersionFile && react-app-rewired build && npm run fixPathForGHPages",
-    "test": "react-app-rewired test",
+    "start": "npm run createVersionFile && react-scripts start",
+    "build": "npm run createVersionFile && react-scripts build && npm run fixPathForGHPages",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

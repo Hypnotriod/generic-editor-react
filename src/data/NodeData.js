@@ -12,7 +12,7 @@
  * @param {INodeData[]} [nodes = []]
  * @returns {INodeData} 
  */
-export const createNode = (id, name = `Node_${id}`, nodes = []) => {
+export const createNode = (id, name = `node_${id}`, nodes = []) => {
     return {
         id: id,
         name: name,
