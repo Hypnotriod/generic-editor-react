@@ -38,6 +38,25 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Deploy",
+            "type": "shell",
+            "command": "npm",
+            "args": [
+                "run-script",
+                "deploy"
+            ],
+            "options": {
+                "env": {
+                    "NODE_OPTIONS": "--openssl-legacy-provider"
+                }
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
