@@ -146,3 +146,12 @@ export const exportJSONFile = (stringifiedContent, fileName) => {
 export const exportImageFile = (content, fileName) => {
     exportFile(content, fileName, "image/png, image/jpeg, image/jpg");
 };
+
+/**
+ * The function will export a File as zip from the browser
+ * @param {Fill} content 
+ * @param {string} fileName 
+ */
+export const exportZipFile = (content, fileName) => {
+    exportFile(content, fileName, "application/x-zip");
+}

@@ -1,7 +1,8 @@
+import { after } from "lodash";
 import { VERSION } from "../../../VERSION";
-import { convertImageFileToBase64, exportJSONFile } from "../../../tools/resourcesTools";
+import { convertImageFileToBase64, exportImageFile, exportJSONFile, exportZipFile } from "../../../tools/resourcesTools";
 import { convertResourcesRecursively } from "./common";
-import { after } from "lodash"
+import JSZip from "jszip";
 
 export const FILE_TYPES = {
     MAIN: "data-main",
@@ -107,9 +108,36 @@ const exportMainData = (store, fileName, onFinish) => {
  * @param {() => void} [onFinish]
  */
 export const exportData = (store, fileName, onFinish = () => { }) => {
-
-    const callback = after(2, onFinish)
-
+    if (!fileName) {
+        onFinish();
+        return;
+    }
+    const callback = after(2, onFinish);
     exportMainData(store, fileName, callback);
     exportResourcesAsBase64(store, fileName, callback);
+}
+
+/**
+ * @param {import("../../../store").Store} store
+ * @param {string} fileName  
+ * @param {() => void} [onFinish]
+ */
+export const exportUsedImages = (store, fileName, onFinish = () => { }) => {
+    if (!fileName) {
+        onFinish();
+        return;
+    }
+    const { resourcesList, spritePropertiesList, nineSliceSpritePropertiesList } = store.getState();
+    const resourcesToExport = collectUsedResources({ ...spritePropertiesList, ...nineSliceSpritePropertiesList }, resourcesList);
+    const usedFiles = [];
+    const zip = new JSZip();
+    resourcesToExport
+        .filter(([id, _]) => usedFiles.includes(id) ? false : Boolean(usedFiles.push(id)))
+        .forEach(([_, file]) => {
+            zip.file(file.name, file);
+        });
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+        exportZipFile(content, `${fileName || FILE_NAMES.IMAGES_ZIP}.zip`)
+        onFinish();
+    });
 }

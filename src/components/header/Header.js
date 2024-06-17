@@ -12,7 +12,7 @@ import { importTextPropertiesAction } from "../../store/properties/text";
 import { importResourcesAction } from "../../store/resources";
 import { importTreeDataAction } from "../../store/tree";
 import { importData } from "./features/importLogic";
-import { exportData } from "./features/exportLogic";
+import { exportUsedImages, exportData } from "./features/exportLogic";
 import { ModalPopup } from "./ModalPopup";
 import { createNewProject, exportDataAndCreateNew } from "./features/createNewProjectLogic";
 
@@ -35,7 +35,8 @@ import { createNewProject, exportDataAndCreateNew } from "./features/createNewPr
 */
 export const HeaderComponent = (props) => {
     const [isModalVisible, setModalVisibility] = useState(false);
-    const inputExportAs = useRef();
+    const inputExportFilesAs = useRef();
+    const inputExportImagesAs = useRef();
 
     return (
         <header>
@@ -46,8 +47,12 @@ export const HeaderComponent = (props) => {
                     <span onClick={() => importData(props)}>Import Files</span>
                     <span onClick={() => exportData(store, undefined)}>Export Files</span>
                     <span>
-                        <span onClick={() => exportData(store, inputExportAs.current.value)}>Export Files As</span>
-                        <input type="text" ref={inputExportAs} style={{backgroundColor: "black"}}></input>
+                        <span onClick={() => exportData(store, inputExportFilesAs.current.value)}>Export Files As</span>
+                        <input type="text" ref={inputExportFilesAs} style={{ backgroundColor: "black" }}></input>
+                    </span>
+                    <span>
+                        <span onClick={() => exportUsedImages(store, inputExportImagesAs.current.value)}>Export Used Images As</span>
+                        <input type="text" ref={inputExportImagesAs} style={{ backgroundColor: "black" }}></input>
                     </span>
                 </div>
             </div>
