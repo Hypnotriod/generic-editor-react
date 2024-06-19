@@ -15,10 +15,9 @@ const FILE_DESCRIPTION = {
 };
 
 const FILE_NAMES = {
-    MAIN: "main_scene.json",
-    RESOURCES: "main_assets_base64.json",
     MAIN_SUFFIX: ".json",
     RESOURCES_SUFFIX: "_assets.json",
+    IMAGES_ARCHIVE_SUFFIX: ".zip",
 };
 
 /**
@@ -56,7 +55,7 @@ const exportResourcesAsBase64 = (store, fileName, onFinish) => {
                 },
                 resources
             }, null, 2),
-            fileName ? fileName + FILE_NAMES.RESOURCES_SUFFIX : FILE_NAMES.RESOURCES
+            fileName + FILE_NAMES.RESOURCES_SUFFIX
         );
         onFinish();
     };
@@ -96,7 +95,7 @@ const exportMainData = (store, fileName, onFinish) => {
             graphicsList,
             textPropertiesList
         }, null, 2),
-        fileName ? fileName + FILE_NAMES.MAIN_SUFFIX : FILE_NAMES.MAIN
+        fileName + FILE_NAMES.MAIN_SUFFIX
     );
 
     onFinish();
@@ -137,7 +136,7 @@ export const exportUsedImages = (store, fileName, onFinish = () => { }) => {
             zip.file(file.name, file);
         });
     zip.generateAsync({ type: "blob" }).then(function (content) {
-        exportZipFile(content, `${fileName || FILE_NAMES.IMAGES_ZIP}.zip`)
+        exportZipFile(content, fileName + FILE_NAMES.IMAGES_ARCHIVE_SUFFIX)
         onFinish();
     });
 }

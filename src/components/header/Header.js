@@ -44,15 +44,14 @@ export const HeaderComponent = (props) => {
                 <span>File</span>
                 <div id="options">
                     <span onClick={() => setModalVisibility(true)}>New Project</span>
-                    <span onClick={() => importData(props)}>Import Files</span>
-                    <span onClick={() => exportData(store, undefined)}>Export Files</span>
-                    <span>
-                        <span onClick={() => exportData(store, inputExportFilesAs.current.value)}>Export Files As</span>
-                        <input type="text" ref={inputExportFilesAs} style={{ backgroundColor: "black" }}></input>
+                    <span onClick={() => importData(props)}>Import Scene Files</span>
+                    <span style={{ padding: 0 }}>
+                        <span onClick={() => exportData(store, inputExportFilesAs.current.value)}>Export Scene Files As</span>
+                        <input type="text" ref={inputExportFilesAs} style={{ backgroundColor: "#252121", paddingLeft: '5px', margin: '10px', marginTop: 0 }} defaultValue={"Scene"}></input>
                     </span>
-                    <span>
+                    <span style={{ padding: 0 }}>
                         <span onClick={() => exportUsedImages(store, inputExportImagesAs.current.value)}>Export Used Images As</span>
-                        <input type="text" ref={inputExportImagesAs} style={{ backgroundColor: "black" }}></input>
+                        <input type="text" ref={inputExportImagesAs} style={{ backgroundColor: "#252121", paddingLeft: '5px', margin: '10px', marginTop: 0 }} defaultValue={"Images"}></input>
                     </span>
                 </div>
             </div>
