@@ -28,7 +28,7 @@ export class ViewElementBounds {
         this._bounds.clear();
 
         const x = element._localBoundsRect ? element._localBoundsRect.x * cameraScale : (element.anchor !== undefined ? -element.width * element.anchor.x * cameraScale : 0);
-        const y = element._localBoundsRect ? element._localBoundsRect.y * cameraScale : (element.anchor !== undefined ? -element.width * element.anchor.y * cameraScale : 0);
+        const y = element._localBoundsRect ? element._localBoundsRect.y * cameraScale : (element.anchor !== undefined ? -element.height * element.anchor.y * cameraScale : 0);
         const width = (element.scale ? element.width * (element.scale.x < 0 && element.width > 0 ? -1 : 1) : element.width) * cameraScale;
         const height = (element.scale ? element.height * (element.scale.y < 0 && element.height > 0 ? -1 : 1) : element.height) * cameraScale;
 
