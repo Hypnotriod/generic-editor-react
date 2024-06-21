@@ -57,7 +57,7 @@ export const HeaderComponent = (props) => {
                 onClose={() => setModalVisibility(false)}
                 onConfirm={() => {
                     setModalVisibility(false);
-                    exportDataAndCreateNew(store, props);
+                    exportDataAndCreateNew(store, props, store.getState().tree.treeData.name);
                 }}
                 onReject={() => {
                     setModalVisibility(false);

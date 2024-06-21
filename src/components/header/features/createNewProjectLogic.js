@@ -29,6 +29,6 @@ export const createNewProject = (actions) => {
  * @param {import("../../../store").IStore} store 
  * @param {import("../Header").HeaderComponentDependencies} actions 
  */
-export const exportDataAndCreateNew = (store, actions) => {
-    exportData(store, () => createNewProject(actions));
+export const exportDataAndCreateNew = (store, actions, fileName) => {
+    exportData(store, fileName, () => createNewProject(actions));
 };
