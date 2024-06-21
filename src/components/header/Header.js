@@ -35,8 +35,6 @@ import { createNewProject, exportDataAndCreateNew } from "./features/createNewPr
 */
 export const HeaderComponent = (props) => {
     const [isModalVisible, setModalVisibility] = useState(false);
-    const inputExportFilesAs = useRef();
-    const inputExportImagesAs = useRef();
 
     return (
         <header>
@@ -45,14 +43,8 @@ export const HeaderComponent = (props) => {
                 <div id="options">
                     <span onClick={() => setModalVisibility(true)}>New Project</span>
                     <span onClick={() => importData(props)}>Import Scene Files</span>
-                    <span style={{ padding: 0 }}>
-                        <span onClick={() => exportData(store, inputExportFilesAs.current.value)}>Export Scene Files As</span>
-                        <input type="text" ref={inputExportFilesAs} style={{ backgroundColor: "#252121", paddingLeft: '5px', margin: '10px', marginTop: 0 }} defaultValue={"Scene"}></input>
-                    </span>
-                    <span style={{ padding: 0 }}>
-                        <span onClick={() => exportUsedImages(store, inputExportImagesAs.current.value)}>Export Used Images As</span>
-                        <input type="text" ref={inputExportImagesAs} style={{ backgroundColor: "#252121", paddingLeft: '5px', margin: '10px', marginTop: 0 }} defaultValue={"Images"}></input>
-                    </span>
+                    <span onClick={() => exportData(store, store.getState().tree.treeData.name)}>Export Scene Files</span>
+                    <span onClick={() => exportUsedImages(store, store.getState().tree.treeData.name)}>Export Used Images</span>
                 </div>
             </div>
             <div>
