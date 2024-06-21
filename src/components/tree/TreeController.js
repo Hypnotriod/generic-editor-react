@@ -6,10 +6,14 @@ import { PositionsInTheBox, getPositionInTheBox } from "../../tools/treeUITools"
 import "./tree.css";
 
 import { connect } from "react-redux";
-import { ROOT_NODE_ID } from "../../data/StoreData";
+import { ENTITY_TYPES, ROOT_NODE_ID } from "../../data/StoreData";
 import store from "../../store";
-import { insertBeforeNodeAction, moveNodeAction, setSelectedNodeIDAction } from "../../store/tree";
+import { createNodeAction, insertBeforeNodeAction, moveNodeAction, setSelectedNodeIDAction, updateNodeNameAction } from "../../store/tree";
 import { Tree } from "./Tree";
+import { initEntityAction } from "../../store/entityTypes";
+import { initSpritePropertiesAction, updateSpritePropertiesAction } from "../../store/properties/sprite";
+import { initBasePropertiesAction } from "../../store/properties/base";
+import { getUID } from "../../tools/uidGenerator";
 
 const UI_CLASS_NAMES = {
     [PositionsInTheBox.CENTER]: "insert-center",
@@ -33,7 +37,7 @@ const resetStyles = (nodeElement) => {
 /**
 * @param { TreeComponentControllerDependencies} props 
 */
-const TreeComponentController = ({ moveNodeAction, insertBeforeNodeAction, setSelectedNodeIDAction }) => {
+const TreeComponentController = (props) => {
 
     /* Some important rules the code follows
         - we can't set a node to itself
@@ -55,16 +59,31 @@ const TreeComponentController = ({ moveNodeAction, insertBeforeNodeAction, setSe
     };
 
     const handleDrop = (event) => {
+        if (window["__RESOURCE_ID"]) {
+            const resourceID = window["__RESOURCE_ID"];
+            delete window["__RESOURCE_ID"];
+            const resourceName = props.resourcesList[resourceID].name;
+            const name = props.resourcesList[resourceID].name.replace(/\.[^/.]+$/, "");
+            const newID = getUID();
+            props.initBasePropertiesAction(newID);
+            props.initEntityAction(newID, ENTITY_TYPES.SPRITE);
+            props.initSpritePropertiesAction(newID);
+            props.createNodeAction(targetNodeData.id, newID);
+            props.updateNodeNameAction({ nodeID: newID, name });
+            props.updateSpritePropertiesAction({ nodeID: newID, properties: { resourceID, resourceName } });
+            props.setSelectedNodeIDAction(newID);
+        }
+
         if (draggedNodeData.id < 0 || targetNodeData.id < 0) {
             handleDragEnd(event);
             return;
         }
 
         if (insertPosition === PositionsInTheBox.CENTER) {
-            moveNodeAction({ nodeData: draggedNodeData, referenceID: targetNodeData.id });
+            props.moveNodeAction({ nodeData: draggedNodeData, referenceID: targetNodeData.id });
         }
         else {
-            insertBeforeNodeAction({ nodeData: draggedNodeData, referenceID: targetNodeData.id });
+            props.insertBeforeNodeAction({ nodeData: draggedNodeData, referenceID: targetNodeData.id });
         }
 
         handleDragEnd(event);
@@ -130,11 +149,11 @@ const TreeComponentController = ({ moveNodeAction, insertBeforeNodeAction, setSe
 
     const handleClick = (event) => {
         if (!event.target.hasAttribute("data-id")) {
-            setSelectedNodeIDAction(null)
+            props.setSelectedNodeIDAction(null)
             return;
         }
         const selectedID = Number(event.target.getAttribute("data-id"));
-        setSelectedNodeIDAction(selectedID);
+        props.setSelectedNodeIDAction(selectedID);
     }
 
     return (
@@ -152,13 +171,25 @@ const TreeComponentController = ({ moveNodeAction, insertBeforeNodeAction, setSe
 };
 
 /**
- * @param {import("../../store").IStore} data 
+ * @param {import("../../../store").IStore} data 
  */
-const mapStateToProps = (data) => {
-    return {};
+const mapStateToProps = ({ resourcesList }) => {
+    return {
+        resourcesList: resourcesList
+    }
 };
 
 export const TreeController = connect(
     mapStateToProps,
-    { moveNodeAction, insertBeforeNodeAction, setSelectedNodeIDAction }
+    {
+        moveNodeAction,
+        insertBeforeNodeAction,
+        setSelectedNodeIDAction,
+        initBasePropertiesAction,
+        initEntityAction,
+        initSpritePropertiesAction,
+        createNodeAction,
+        updateNodeNameAction,
+        updateSpritePropertiesAction,
+    }
 )(TreeComponentController)
