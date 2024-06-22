@@ -35,6 +35,9 @@ export const App = () => {
   const [services, setServices] = useState(null);
   const canvasRef = useRef(null);
   const canvasContainerRef = useRef(null);
+  const bottomPanel = useRef(null);
+  const bottomSplitBarRef = useRef(null);
+  const [isSplitBottomDragActive, setSplitBottomDragActive] = useState(false);
   const gizmoButtons = {
     move: useRef(null),
     resize: useRef(null),
@@ -69,8 +72,17 @@ export const App = () => {
 
   }, []);
 
+  const onSplitBottomDrag = (e) => {
+    if (!isSplitBottomDragActive) { return; }
+    const clientY = Math.max(100, Math.min(window.innerHeight - 100, e.clientY));
+    bottomPanel.current.style.height = `${window.innerHeight - clientY}px`;
+    canvasContainerRef.current.style.height = `${clientY}px`;
+  }
+
   return (
-    <>
+    <div
+      onMouseUp={() => setSplitBottomDragActive(false)}
+      onMouseMove={onSplitBottomDrag}>
       <Header />
       <div id="left-panel">
         <TreeController />
@@ -96,11 +108,15 @@ export const App = () => {
       <div id="right-panel">
         <PropertiesPanel />
       </div>
-      <div id="bottom-panel">
+      <div id="bottom-panel" ref={bottomPanel}>
+        <div id="split-bar-bottom" ref={bottomSplitBarRef}
+          onMouseDown={() => setSplitBottomDragActive(true)}
+          onMouseMove={onSplitBottomDrag}>
+        </div>
         <ResourcesPanel />
       </div>
       <TreeOptionsPopup />
       <ResourcesOptionsPopup />
-    </>
+    </div>
   );
 }
