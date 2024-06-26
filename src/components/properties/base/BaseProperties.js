@@ -36,6 +36,13 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         onChange("visible", visible);
     };
 
+    const alphaData = {
+        label: "Alpha",
+        dataID: "alpha",
+        value: baseProperty.alpha,
+        onChange
+    };
+
     const positionData = {
         label: "Position",
         dataIDs: ["positionX", "positionY"],
@@ -72,6 +79,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         <div className="properties propertiesTopOffset">
             <ToggleInput {...{ label: "Visible", dataID: "", value: baseProperty.visible, onChange: onVisibilityToggled }} />
             {nodeID === ROOT_NODE_ID && <PointInput {...gridData} />}
+            <NumberInput {...alphaData} />
             <PointInput {...positionData} />
             <PointInput {...scaleData} />
             <NumberInput {...angleData} />

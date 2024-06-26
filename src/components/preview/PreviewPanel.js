@@ -51,7 +51,7 @@ export const PreviewPanelComponent = ({ basePropertiesList, setSelectedNodeIDAct
     const onSelect = (id) => setSelectedNodeIDAction(id);
 
     return (
-        <CContainer {...{ id: "CameraContainer", rotation: 0, visible: true, ...cameraData }}>
+        <CContainer {...{ id: "CameraContainer", rotation: 0, visible: true, alpha: 1, ...cameraData }}>
             <CGrid id="CGrid"
                 cellSize={basePropertiesList[ROOT_NODE_ID].cellSize}
                 gridSize={basePropertiesList[ROOT_NODE_ID].gridSize}

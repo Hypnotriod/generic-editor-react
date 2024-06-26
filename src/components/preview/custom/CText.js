@@ -18,6 +18,7 @@ export const behavior = {
         instance.style = style;
 
         instance.visible = baseProps.visible;
+        instance.alpha = baseProps.alpha;
         instance.position.set(baseProps.positionX, baseProps.positionY);
         instance.scale.set(baseProps.scaleX, baseProps.scaleY);
         instance.anchor.set(anchorX, anchorY);

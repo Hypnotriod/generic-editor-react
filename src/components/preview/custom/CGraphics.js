@@ -26,6 +26,7 @@ export const behavior = {
         instance.endFill();
 
         instance.visible = newProps.visible;
+        instance.alpha = newProps.alpha;
         instance.position.set(newProps.positionX, newProps.positionY);
         instance.scale.set(newProps.scaleX, newProps.scaleY);
         instance.rotation = toRadians(newProps.rotation);
