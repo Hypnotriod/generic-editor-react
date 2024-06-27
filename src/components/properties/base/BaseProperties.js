@@ -56,6 +56,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         dataIDs: ["scaleX", "scaleY"],
         values: [baseProperty.scaleX, baseProperty.scaleY],
         signs: ["X", "Y"],
+        step: 0.1,
         onChange
     };
 

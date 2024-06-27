@@ -5,6 +5,8 @@ import { updateNineSliceSpritePropertiesAction } from "../../../store/properties
 
 import { PointInput } from "../genericInputs/PointInput";
 import { TextureInput } from "../genericInputs";
+import { Texture } from "pixi.js";
+import { Size } from "../genericInputs/Size";
 
 
 /**
@@ -58,6 +60,13 @@ const NineSliceSpritePropertiesComponent = ({
         onChange: onTextureAdded,
     };
 
+    const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
+    const textureSize = {
+        label: "Texture Size",
+        dataIDs: ["width", "height"],
+        values: [texture.width, texture.height],
+    };
+
     const cornersABData = {
         label: "Corners",
         dataIDs: ["A", "C"],
@@ -79,6 +88,7 @@ const NineSliceSpritePropertiesComponent = ({
         dataIDs: ["anchorX", "anchorY"],
         values: [spriteProperties.anchorX, spriteProperties.anchorY],
         signs: ["X", "Y"],
+        step: 0.5,
         onChange: onInputChange
     };
 
@@ -93,6 +103,7 @@ const NineSliceSpritePropertiesComponent = ({
     return (
         <div className="properties propertiesTopOffset">
             <TextureInput {...textureData} />
+            <Size {...textureSize} />
             <PointInput {...anchorData} />
             <PointInput {...sizeData} />
             <PointInput {...cornersABData} />

@@ -5,6 +5,8 @@ import { updateSpritePropertiesAction } from "../../../store/properties/sprite";
 
 import { PointInput } from "../genericInputs/PointInput";
 import { TextureInput } from "../genericInputs";
+import { Texture } from "pixi.js";
+import { Size } from "../genericInputs/Size";
 
 
 /**
@@ -58,17 +60,26 @@ const SpritePropertiesComponent = ({
         onChange: onTextureAdded,
     };
 
+    const texture = resource ? Texture.from(resource.name) : Texture.EMPTY;
+    const textureSize = {
+        label: "Texture Size",
+        dataIDs: ["width", "height"],
+        values: [texture.width, texture.height],
+    };
+
     const anchorData = {
         label: "Anchor",
         dataIDs: ["anchorX", "anchorY"],
         values: [anchorX, anchorY],
         signs: ["X", "Y"],
+        step: 0.5,
         onChange: onInputChange
     };
 
     return (
         <div className="properties propertiesTopOffset">
             <TextureInput {...textureData} />
+            <Size {...textureSize} />
             <PointInput {...anchorData} />
         </div>
     )
