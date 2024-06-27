@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { parseNumberMiddleware } from ".";
 
 /**
@@ -22,9 +22,13 @@ export const NumberInput = ({
     onChange,
     dataID,
     step = 1,
+    max = Number.MAX_SAFE_INTEGER,
+    min = Number.MIN_SAFE_INTEGER,
     sign = "",
     middleware = (event) => event
 }) => {
+
+    const [isShiftPressed, setShiftPressed] = useState(false);
 
     const onInputChange = (event) => {
         event = middleware(event);
@@ -32,15 +36,23 @@ export const NumberInput = ({
         onChange(key, value);
     };
 
+    const onKeyPressedReleased = (event) => {
+        setShiftPressed(event.shiftKey);
+    };
+
     return (
-        <div className="flexRow">
+        <div className="flexRow"
+            onKeyDown={onKeyPressedReleased}
+            onKeyUp={onKeyPressedReleased}>
             <span className="textLeft colorGray widthOneThird">{label}</span>
             <div data-sign={sign} className="widthOneThird positionRelative inputAfterElement">
                 <input
                     className="widthFull"
                     type="number"
                     data-id={dataID}
-                    step={step}
+                    step={isShiftPressed ? step * 10 : step}
+                    max={max}
+                    min={min}
                     value={value}
                     onChange={onInputChange}
                 />

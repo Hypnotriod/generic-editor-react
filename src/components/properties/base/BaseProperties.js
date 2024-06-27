@@ -40,6 +40,9 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         label: "Alpha",
         dataID: "alpha",
         value: baseProperty.alpha,
+        step: 0.1,
+        max: 1,
+        min: 0,
         onChange
     };
 
@@ -65,6 +68,7 @@ const BasePropertiesComponent = ({ selectedNodeID, basePropertiesList, updateBas
         dataIDs: ["cellSize", "gridSize"],
         values: [baseProperty.cellSize, baseProperty.gridSize],
         signs: ["Cell", "Grid"],
+        min: 0,
         onChange
     };
 

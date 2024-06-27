@@ -62,7 +62,9 @@ export const RectanglePropertiesComponent = ({ selectedNodeID, graphicsList, upd
         label: "Alpha",
         dataID: "alpha",
         value: graphics.alpha,
-        step: 0.01,
+        step: 0.1,
+        max: 1,
+        min: 0,
         onChange
     };
 
