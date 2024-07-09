@@ -7,6 +7,8 @@ import { addResourceAction, removeResourceAction } from "../../store/resources";
 import { createImagesLoader, exportImageFile } from "../../tools/resourcesTools";
 import { getUID } from "../../tools/uidGenerator";
 import { PopupWithOptions } from "../optionsPopup";
+import { updateNineSliceSpriteResourceNameAction } from "../../store/properties/nineSliceSprite";
+import { updateSpriteResourceNameAction } from "../../store/properties/sprite";
 
 const OPTIONS_MAP = {
     ADD_IMAGE: "ADD_IMAGE",
@@ -82,6 +84,9 @@ const ResourcesOptionsPopupComponent = (props) => {
                 pixiLoader.loadAssets(files[0], () => {
                     const data = files.map((file) => ({ id: id, file }));
                     props.addResourceAction(data);
+                    const resource = { resourceID: String(id), resourceName: data[0].file.name }
+                    props.updateSpriteResourceNameAction(resource);
+                    props.updateNineSliceSpriteResourceNameAction(resource);
                 });
             };
             const imageLoaderElement = createImagesLoader(onImagesLoaded);
@@ -91,6 +96,9 @@ const ResourcesOptionsPopupComponent = (props) => {
         else if (option === OPTIONS_MAP.REMOVE_IMAGE) {
             pixiLoader.removeAssets(store.getState().resourcesList[id])
             props.removeResourceAction(id);
+            const resource = { resourceID: String(id), resourceName: null }
+            props.updateSpriteResourceNameAction(resource);
+            props.updateNineSliceSpriteResourceNameAction(resource);
         }
         else if (option === OPTIONS_MAP.DOWNLOAD_IMAGE) {
             const file = store.getState().resourcesList[id];
@@ -117,6 +125,8 @@ export const ResourcesOptionsPopup = connect(
     mapStateToProps,
     {
         addResourceAction,
-        removeResourceAction
+        updateSpriteResourceNameAction,
+        updateNineSliceSpriteResourceNameAction,
+        removeResourceAction,
     }
 )(ResourcesOptionsPopupComponent)

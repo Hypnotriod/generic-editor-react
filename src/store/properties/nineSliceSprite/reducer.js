@@ -40,6 +40,16 @@ export const nineSliceSpritePropertiesListReducer = (state = STATE, { type, payl
         newState[nodeID] = newNodeProps;
         return newState;
     }
+    else if (type === NINE_SLICE_SPRITE_PROPERTIES_ACTIONS.UPDATE_NINE_SLICE_RESOURCE_NAME) {
+        const { resourceID, resourceName } = payload;
+        const newState = { ...state };
+        for (const prop of Object.values(newState)) {
+            if (prop.resourceID === resourceID) {
+                prop.resourceName = resourceName;
+            }
+        }
+        return newState;
+    }
     else if (type === NINE_SLICE_SPRITE_PROPERTIES_ACTIONS.IMPORT_NINE_SLICE_SPRITE_PROPERTIES) {
         return { ...payload }
     }

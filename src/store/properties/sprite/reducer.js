@@ -43,6 +43,16 @@ export const spritePropertiesListReducer = (state = STATE, { type, payload }) =>
         newState[nodeID] = newNodeProps;
         return newState;
     }
+    else if (type === SPRITE_PROPERTIES_ACTIONS.UPDATE_RESOURCE_NAME) {
+        const { resourceID, resourceName } = payload;
+        const newState = { ...state };
+        for (const prop of Object.values(newState)) {
+            if (prop.resourceID === resourceID) {
+                prop.resourceName = resourceName;
+            }
+        }
+        return newState;
+    }
     else if (type === SPRITE_PROPERTIES_ACTIONS.IMPORT_SPRITE_PROPERTIES) {
         return { ...payload }
     }

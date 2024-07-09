@@ -22,6 +22,13 @@ export const updateSpritePropertiesAction = (payload) => {
 };
 
 /**
+ * @param {{resourceID: string, resourceName: string}} payload
+ */
+export const updateSpriteResourceNameAction = (payload) => {
+    return { type: SPRITE_PROPERTIES_ACTIONS.UPDATE_RESOURCE_NAME, payload }
+};
+
+/**
  * @param {import("./reducer").ISpritePropertiesListState} payload
  */
 export const importSpritePropertiesAction = (payload) => {

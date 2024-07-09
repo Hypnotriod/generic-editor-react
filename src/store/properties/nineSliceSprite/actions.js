@@ -21,6 +21,14 @@ export const updateNineSliceSpritePropertiesAction = (payload) => {
     return { type: NINE_SLICE_SPRITE_PROPERTIES_ACTIONS.UPDATE_NINE_SLICE_SPRITE_PROPERTIES, payload }
 };
 
+
+/**
+ * @param {{resourceID: string, resourceName: string}} payload
+ */
+export const updateNineSliceSpriteResourceNameAction = (payload) => {
+    return { type: NINE_SLICE_SPRITE_PROPERTIES_ACTIONS.UPDATE_NINE_SLICE_RESOURCE_NAME, payload }
+};
+
 /**
  * @param {import("./reducer").INineSliceSpritePropertiesListState} payload
  */
