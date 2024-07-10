@@ -53,7 +53,7 @@ const TextPropertiesComponent = ({ selectedNodeID, textPropertiesList, updateTex
 
     // essential style values
     const textData = { label: "Text", dataID: "text", value: text, onChange };
-    const anchorData = { label: "Anchor", dataIDs: ["anchorX", "anchorY"], values: [anchorX, anchorY], signs: ["X", "Y"], onChange };
+    const anchorData = { label: "Anchor", dataIDs: ["anchorX", "anchorY"], values: [anchorX, anchorY], signs: ["X", "Y"], step: 0.5, onChange };
     const colorData = { label: "Color", dataID: "fill", value: fill, onChange };
     const fontFamilyData = { label: "Font Family", dataID: "fontFamily", selected: fontFamily, options: Object.values(FONT_FAMILIES), onChange };
     const fontStyleData = { label: "Font Style", dataID: "fontStyle", selected: fontStyle, options: Object.values(FONT_STYLE), onChange };
